@@ -3,7 +3,7 @@ import page from "@/styles/Page.module.css";
 
 export const dynamicParams = false;
 
-export default async function About({
+export default async function SearchPage({
   params
 }: {
   params: Promise<{ locale: string }>;
@@ -13,10 +13,9 @@ export default async function About({
 
   return (
     <>
-      <h1 className={page.h1}>{t(safeLocale, "about")}</h1>
+      <h1 className={page.h1}>{t(safeLocale, "search")}</h1>
       <p className={page.muted}>
-        Мета сайту — у зручній формі поширювати навчально-довідкову інформацію про типи фільмів
-        і заохочувати студентів до розробки веб-застосунків.
+        Заготовка. Тут буде пошук по всьому сайту (без форуму).
       </p>
     </>
   );
