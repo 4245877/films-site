@@ -3,7 +3,7 @@ import page from "@/styles/Page.module.css";
 
 export const dynamicParams = false;
 
-export default async function CalendarPage({
+export default async function About({
   params
 }: {
   params: Promise<{ locale: string }>;
@@ -13,9 +13,10 @@ export default async function CalendarPage({
 
   return (
     <>
-      <h1 className={page.h1}>{t(safeLocale, "calendar")}</h1>
+      <h1 className={page.h1}>{t(safeLocale, "about")}</h1>
       <p className={page.muted}>
-        Заготовка. Тут ти додаси календар з підсвічуванням днів і списком подій по кліку.
+        Мета сайту — у зручній формі поширювати навчально-довідкову інформацію про типи фільмів
+        і заохочувати студентів до розробки веб-застосунків.
       </p>
     </>
   );

@@ -1,0 +1,11 @@
+﻿{
+  "name": "films-site",
+  "private": true,
+  "workspaces": ["apps/*"],
+  "scripts": {
+    "dev": "npm --workspace @films/web run dev",
+    "build": "npm --workspace @films/web run build",
+    "start": "npm --workspace @films/web run start",
+    "lint": "npm --workspace @films/web run lint"
+  }
+}

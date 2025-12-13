@@ -1,0 +1,81 @@
+:root {
+  /* =========================
+     СВЕТЛАЯ ТЕМА (Default)
+     ========================= */
+  --bg: #FDF6E3;           /* Основной фон (Cream) */
+  --panel: #FFFFFF;        /* Фон карточек/модулей (White) */
+  --text: #4E342E;         /* Основной текст (Dark Brown) */
+  --muted: #795548;        /* Второстепенный текст (Brown Grey) */
+  --border: #D7CCC8;       /* Цвет границ и разделителей */
+  
+  --accent: #BF360C;       /* Основной CTA (Burnt Orange) */
+  --accent-secondary: #9575CD; /* Тонкий акцент (Soft Violet) */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* =========================
+       ТЁМНАЯ ТЕМА (Override)
+       ========================= */
+    --bg: #1E1B1A;         /* Основной фон (Deep Espresso) */
+    --panel: #2C2624;      /* Фон карточек/модулей (Mocha) */
+    --text: #E6E1DE;       /* Основной текст (Warm Grey) */
+    --muted: #A1887F;      /* Второстепенный текст (Taupe) */
+    --border: #3E3B39;     /* Цвет границ (Darker Taupe) */
+    
+    --accent: #FF7043;     /* Основной CTA (Soft Coral) */
+    --accent-secondary: #B39DDB; /* Тонкий акцент (Pale Lavender) */
+  }
+}
+
+/* =========================
+   БАЗОВЫЕ СТИЛИ
+   ========================= */
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg);
+  color: var(--text);
+  /* Плавный переход при смене темы (опционально) */
+  transition: background-color 0.3s ease, color 0.3s ease;
+  
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif;
+  -webkit-font-smoothing: antialiased; /* Сглаживание шрифтов для macOS */
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Ссылки теперь используют акцентный цвет для лучшей видимости */
+a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+a:hover {
+  text-decoration: underline;
+  opacity: 0.8;
+}
+
+/* Класс для обычного текста внутри ссылок, если нужно убрать цвет */
+a.text-link {
+  color: inherit;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+/* Дополнительный класс для карточек, чтобы сразу использовать переменные */
+.card {
+  background-color: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px; /* Скругление */
+  padding: 16px;
+}

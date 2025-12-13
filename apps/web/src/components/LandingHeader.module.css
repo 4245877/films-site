@@ -1,0 +1,24 @@
+.header {
+  border-bottom: 1px solid var(--border);
+  background: rgba(17, 24, 38, 0.55);
+  backdrop-filter: blur(8px);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 0;
+}
+
+.brand { font-weight: 700; }
+.lang { display: flex; gap: 8px; }
+
+.lang a {
+  padding: 6px 10px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  color: var(--muted);
+}
+.lang a:hover { color: var(--text); }

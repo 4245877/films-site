@@ -1,0 +1,9 @@
+﻿{
+  "name": "@films/cms",
+  "private": true,
+  "scripts": {
+    "dev": "node -e \"console.log('TODO: scaffold Strapi in apps/cms')\"",
+    "build": "node -e \"console.log('TODO')\"",
+    "start": "node -e \"console.log('TODO')\""
+  }
+}

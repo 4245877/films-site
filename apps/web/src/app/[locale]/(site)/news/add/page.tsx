@@ -3,7 +3,7 @@ import page from "@/styles/Page.module.css";
 
 export const dynamicParams = false;
 
-export default async function CalendarPage({
+export default async function AddNewsPage({
   params
 }: {
   params: Promise<{ locale: string }>;
@@ -13,9 +13,9 @@ export default async function CalendarPage({
 
   return (
     <>
-      <h1 className={page.h1}>{t(safeLocale, "calendar")}</h1>
+      <h1 className={page.h1}>{t(safeLocale, "addNews")}</h1>
       <p className={page.muted}>
-        Заготовка. Тут ти додаси календар з підсвічуванням днів і списком подій по кліку.
+        Заготовка форми. Пізніше підв’яжемо авторизацію і модерацію.
       </p>
     </>
   );

@@ -1,0 +1,67 @@
+/* Contacts page helpers */
+
+.contactGrid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(3, minmax(240px, 1fr));
+  margin-top: 12px;
+}
+
+@media (max-width: 900px) {
+  .contactGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.contactCard {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+  background: var(--panel);
+}
+
+.contactTitle {
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.contactRow {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.badge {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 6px 10px;
+  color: var(--muted);
+  background: var(--panel);
+  font-size: 12px;
+}
+
+.faqList {
+  margin-top: 12px;
+  display: grid;
+  gap: 10px;
+}
+
+.faq {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--panel);
+  padding: 10px 12px;
+}
+
+.faqSummary {
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.faqBody {
+  margin-top: 8px;
+  color: var(--muted);
+  line-height: 1.7;
+}
