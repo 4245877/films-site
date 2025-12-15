@@ -1,81 +1,254 @@
+/* apps/web/src/app/globals.css  */
+
 :root {
-  /* =========================
-     СВЕТЛАЯ ТЕМА (Default)
-     ========================= */
-  --bg: #FDF6E3;           /* Основной фон (Cream) */
-  --panel: #FFFFFF;        /* Фон карточек/модулей (White) */
-  --text: #4E342E;         /* Основной текст (Dark Brown) */
-  --muted: #795548;        /* Второстепенный текст (Brown Grey) */
-  --border: #D7CCC8;       /* Цвет границ и разделителей */
-  
-  --accent: #BF360C;       /* Основной CTA (Burnt Orange) */
-  --accent-secondary: #9575CD; /* Тонкий акцент (Soft Violet) */
+  /* Подсказка браузеру для встроенных UI-элементов (формы, скроллбары и т.п.) */
+  color-scheme: light dark;
+
+  /* Цвета */
+  --bg: #fdf6e3;
+  --panel: #ffffff;
+  --text: #4e342e;
+  --muted: #795548;
+  --border: #d7ccc8;
+  --accent: #bf360c;
+  --accent-secondary: #9575cd;
+
+  /* Геометрия / сетка */
+  --container: 1200px;
+  --radius-1: 12px;
+  --radius-2: 16px;
+  --radius-3: 24px;
+
+  /* Тени (легкие, «воздушные») */
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.04), 0 10px 24px rgba(0, 0, 0, 0.06);
+  --shadow-2: 0 2px 8px rgba(0, 0, 0, 0.06), 0 18px 40px rgba(0, 0, 0, 0.10);
+
+  /* Движение */
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --dur-1: 120ms;
+  --dur-2: 220ms;
+  --dur-3: 520ms;
+
+  /* Фокус */
+  --focus-ring: 0 0 0 3px color-mix(in oklab, var(--accent) 22%, transparent);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    /* =========================
-       ТЁМНАЯ ТЕМА (Override)
-       ========================= */
-    --bg: #1E1B1A;         /* Основной фон (Deep Espresso) */
-    --panel: #2C2624;      /* Фон карточек/модулей (Mocha) */
-    --text: #E6E1DE;       /* Основной текст (Warm Grey) */
-    --muted: #A1887F;      /* Второстепенный текст (Taupe) */
-    --border: #3E3B39;     /* Цвет границ (Darker Taupe) */
-    
-    --accent: #FF7043;     /* Основной CTA (Soft Coral) */
-    --accent-secondary: #B39DDB; /* Тонкий акцент (Pale Lavender) */
+    --bg: #1e1b1a;
+    --panel: #2c2624;
+    --text: #e6e1de;
+    --muted: #a1887f;
+    --border: #3e3b39;
+    --accent: #ff7043;
+    --accent-secondary: #b39ddb;
+
+    --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.25), 0 10px 24px rgba(0, 0, 0, 0.30);
+    --shadow-2: 0 2px 10px rgba(0, 0, 0, 0.35), 0 22px 50px rgba(0, 0, 0, 0.40);
+
+    --focus-ring: 0 0 0 3px color-mix(in oklab, var(--accent) 28%, transparent);
   }
 }
 
-/* =========================
-   БАЗОВЫЕ СТИЛИ
-   ========================= */
-
-* {
+/* Reset / base */
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
-html, body {
+* {
   margin: 0;
   padding: 0;
-  background-color: var(--bg);
-  color: var(--text);
-  /* Плавный переход при смене темы (опционально) */
-  transition: background-color 0.3s ease, color 0.3s ease;
-  
-  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif;
-  -webkit-font-smoothing: antialiased; /* Сглаживание шрифтов для macOS */
-  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Ссылки теперь используют акцентный цвет для лучшей видимости */
+/* Smooth scroll — только здесь, без дублей */
+html {
+  scroll-behavior: smooth;
+}
+
+html,
+body {
+  color: var(--text);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  min-height: 100vh;
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(
+      900px 600px at 10% -10%,
+      color-mix(in oklab, var(--accent-secondary) 16%, transparent),
+      transparent 60%
+    ),
+    radial-gradient(
+      900px 600px at 110% 10%,
+      color-mix(in oklab, var(--accent) 14%, transparent),
+      transparent 55%
+    );
+  background-repeat: no-repeat;
+  background-size: auto;
+  overflow-x: hidden;
+
+  transition: background-color var(--dur-3) var(--ease-out), color var(--dur-3) var(--ease-out);
+
+  /* Цвет для чекбоксов/радио в браузере */
+  accent-color: var(--accent);
+}
+
+/* background-attachment: fixed может лагать на мобилках — включаем только на больших экранах */
+@media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
+  body {
+    background-attachment: fixed;
+  }
+}
+
+/* Links */
 a {
   color: var(--accent);
   text-decoration: none;
-  transition: opacity 0.2s ease;
+  transition: opacity var(--dur-2) var(--ease-out), color var(--dur-2) var(--ease-out);
 }
 
 a:hover {
-  text-decoration: underline;
-  opacity: 0.8;
+  opacity: 0.85;
 }
 
-/* Класс для обычного текста внутри ссылок, если нужно убрать цвет */
-a.text-link {
+/* Buttons / form controls */
+button,
+input,
+select,
+textarea {
+  font: inherit;
   color: inherit;
 }
 
-.container {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 16px;
+button {
+  border: none;
+  background: none;
+  cursor: pointer;
 }
 
-/* Дополнительный класс для карточек, чтобы сразу использовать переменные */
-.card {
-  background-color: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 8px; /* Скругление */
-  padding: 16px;
+button:disabled,
+input:disabled,
+select:disabled,
+textarea:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+/* Унифицированный фокус (без дублей и конфликтов) */
+:where(a, button, input, select, textarea):focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+  border-radius: 8px;
+}
+
+/* Selection */
+::selection {
+  background: color-mix(in oklab, var(--accent) 22%, transparent);
+  color: var(--text);
+}
+
+/* Scrollbar (WebKit) */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 6px;
+  border: 2px solid var(--bg);
+  transition: background var(--dur-2) var(--ease-out);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--muted);
+}
+
+/* Общий контейнер, удобно для layout/шапки */
+.container {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Typography */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: var(--text);
+}
+
+p {
+  line-height: 1.7;
+  color: var(--text);
+}
+
+/* Touch / mobile tweaks */
+button,
+a,
+input,
+select,
+textarea {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* Placeholder */
+::placeholder {
+  color: var(--muted);
+  opacity: 0.7;
+}
+
+/* Micro-interaction для кнопок (не ломаем reduce-motion) */
+@media (prefers-reduced-motion: no-preference) {
+  button:active {
+    transform: scale(0.98);
+  }
+}
+
+/* Медиа без скачков */
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+img,
+video,
+iframe {
+  border-radius: var(--radius-1);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
 }

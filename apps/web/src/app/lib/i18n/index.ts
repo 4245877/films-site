@@ -10,7 +10,7 @@ type Dict = Record<string, string>;
 
 const uk: Dict = {
   siteTitle: "Фільми",
-  projectSubtitle: "Навчально-довідковий сайт про типи фільмів",
+  projectSubtitle: "Сайт про типи фільмів",
   home: "Головна",
   films: "Типи фільмів",
   news: "Новини",
