@@ -452,3 +452,342 @@ hr {
     page-break-inside: avoid;
   }
 }
+
+
+/* Добавьте эти улучшения в существующий globals.css */
+
+/* ============================================
+   ДОПОЛНИТЕЛЬНЫЕ ПЕРЕМЕННЫЕ
+   ============================================ */
+
+:root {
+  /* Добавляем переменные для более тонкой настройки */
+  --transition-fast: var(--dur-1) var(--ease-out);
+  --transition-base: var(--dur-2) var(--ease-out);
+  --transition-slow: var(--dur-3) var(--ease-out);
+  
+  /* Улучшенная типографика */
+  --font-body: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans",
+    sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  --font-display: var(--font-body);
+  
+  /* Увеличенный z-index диапазон */
+  --z-base: 1;
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-modal: 300;
+  --z-toast: 400;
+}
+
+/* ============================================
+   УЛУЧШЕННАЯ АНИМАЦИЯ ЗАГРУЗКИ
+   ============================================ */
+
+/* Плавное появление при загрузке страницы */
+@media (prefers-reduced-motion: no-preference) {
+  body {
+    animation: bodyFadeIn 0.6s var(--ease-out);
+  }
+
+  @keyframes bodyFadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
+
+/* ============================================
+   УЛУЧШЕННЫЕ ИНТЕРАКТИВНЫЕ ЭЛЕМЕНТЫ
+   ============================================ */
+
+/* Более плавные переходы для всех интерактивных элементов */
+a,
+button,
+input,
+select,
+textarea {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Улучшенная кнопка с рипл-эффектом */
+button {
+  position: relative;
+  overflow: hidden;
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  button::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: color-mix(in oklab, currentColor 15%, transparent);
+    transform: translate(-50%, -50%);
+    transition: width var(--dur-3) var(--ease-out), height var(--dur-3) var(--ease-out);
+  }
+
+  button:hover::after {
+    width: 300px;
+    height: 300px;
+  }
+}
+
+/* ============================================
+   УЛУЧШЕННАЯ ТИПОГРАФИКА
+   ============================================ */
+
+/* Более гладкое отображение текста */
+body {
+  text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  font-variant-ligatures: common-ligatures;
+}
+
+/* Улучшенные заголовки с плавным градиентом */
+h1,
+h2,
+h3 {
+  position: relative;
+  transition: color var(--dur-2) var(--ease-out);
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  h1:hover,
+  h2:hover,
+  h3:hover {
+    color: var(--accent);
+  }
+}
+
+/* ============================================
+   УЛУЧШЕННЫЕ ФОКУС-СТИЛИ
+   ============================================ */
+
+/* Анимированное кольцо фокуса */
+@media (prefers-reduced-motion: no-preference) {
+  :where(a, button, input, select, textarea):focus-visible {
+    animation: focusRingPulse 1.5s var(--ease-in-out) infinite;
+  }
+
+  @keyframes focusRingPulse {
+    0%, 100% {
+      box-shadow: var(--focus-ring);
+    }
+    50% {
+      box-shadow: 0 0 0 6px color-mix(in oklab, var(--accent) 20%, transparent);
+    }
+  }
+}
+
+/* ============================================
+   УЛУЧШЕННЫЙ СКРОЛЛБАР
+   ============================================ */
+
+/* Анимация скроллбара */
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    180deg,
+    var(--border),
+    color-mix(in oklab, var(--border) 80%, var(--accent))
+  );
+}
+
+/* ============================================
+   ДОПОЛНИТЕЛЬНЫЕ UTILITY CLASSES
+   ============================================ */
+
+/* Плавное появление */
+@media (prefers-reduced-motion: no-preference) {
+  .fade-in {
+    animation: fadeIn var(--dur-3) var(--ease-out);
+  }
+
+  .slide-up {
+    animation: slideUp var(--dur-3) var(--ease-out);
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .scale-in {
+    animation: scaleIn var(--dur-3) var(--ease-spring);
+  }
+
+  @keyframes scaleIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+}
+
+/* Улучшенные тени для глубины */
+.shadow-soft {
+  box-shadow: 
+    0 2px 8px color-mix(in oklab, var(--text) 4%, transparent),
+    0 8px 24px color-mix(in oklab, var(--text) 6%, transparent);
+}
+
+.shadow-medium {
+  box-shadow: 
+    0 4px 12px color-mix(in oklab, var(--text) 6%, transparent),
+    0 16px 32px color-mix(in oklab, var(--text) 8%, transparent);
+}
+
+.shadow-strong {
+  box-shadow: 
+    0 8px 24px color-mix(in oklab, var(--text) 8%, transparent),
+    0 24px 48px color-mix(in oklab, var(--text) 12%, transparent);
+}
+
+/* ============================================
+   ОПТИМИЗАЦИЯ ПРОИЗВОДИТЕЛЬНОСТИ
+   ============================================ */
+
+/* GPU-ускорение для анимаций */
+@media (prefers-reduced-motion: no-preference) {
+  .gpu-accelerated,
+  button,
+  a {
+    transform: translateZ(0);
+    will-change: transform;
+  }
+}
+
+/* ============================================
+   ТЕМНАЯ ТЕМА - УЛУЧШЕНИЯ
+   ============================================ */
+
+@media (prefers-color-scheme: dark) {
+  /* Более мягкие тени для темной темы */
+  :root {
+    --shadow-1: 
+      0 1px 3px rgba(0, 0, 0, 0.5),
+      0 8px 24px rgba(0, 0, 0, 0.6),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+    --shadow-2: 
+      0 4px 12px rgba(0, 0, 0, 0.6),
+      0 20px 48px rgba(0, 0, 0, 0.7),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+    --shadow-3: 
+      0 8px 32px rgba(0, 0, 0, 0.7),
+      0 32px 64px rgba(0, 0, 0, 0.8),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.07);
+  }
+
+  /* Более яркие акценты в темной теме */
+  ::selection {
+    background: color-mix(in oklab, var(--accent) 35%, transparent);
+  }
+
+  ::-moz-selection {
+    background: color-mix(in oklab, var(--accent) 35%, transparent);
+  }
+}
+
+/* ============================================
+   ACCESSIBILITY IMPROVEMENTS
+   ============================================ */
+
+/* Улучшенная видимость для пользователей с нарушениями зрения */
+@media (prefers-contrast: more) {
+  :root {
+    --text: #000000;
+    --bg: #ffffff;
+    --border: #000000;
+    --accent: #c00000;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --text: #ffffff;
+      --bg: #000000;
+      --border: #ffffff;
+      --accent: #ff4444;
+    }
+  }
+
+  a,
+  button {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+  }
+}
+
+/* Улучшенный режим для дальтоников */
+@media (prefers-contrast: more) {
+  :root {
+    --success: #0066cc;
+    --warning: #ff6600;
+    --error: #cc0000;
+  }
+}
+
+/* ============================================
+   MOBILE OPTIMIZATIONS
+   ============================================ */
+
+@media (max-width: 767px) {
+  /* Увеличиваем размер тач-целей */
+  button,
+  a,
+  input,
+  select {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Убираем анимации на мобильных для производительности */
+  @media (prefers-reduced-motion: no-preference) {
+    body {
+      animation: none;
+    }
+  }
+}
+
+/* ============================================
+   PRINT IMPROVEMENTS
+   ============================================ */
+
+@media print {
+  /* Убираем тени для экономии чернил */
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  /* Улучшаем контрастность */
+  :root {
+    --text: #000000;
+    --bg: #ffffff;
+    --muted: #333333;
+  }
+
+  /* Показываем URL для ссылок */
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.875em;
+    color: #666;
+  }
+}
