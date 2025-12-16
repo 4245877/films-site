@@ -1,9 +1,12 @@
-/* apps/web/src/app/globals.css  */
+/* apps/web/src/app/globals.css */
 
+/* ============================================
+   1. VARIABLES & THEME CONFIGURATION
+   ============================================ */
 :root {
   color-scheme: light dark;
 
-  /* Цвета — более насыщенные акценты для лучшего контраста */
+  /* --- Цвета --- */
   --bg: #fdf6e3;
   --panel: #ffffff;
   --text: #4e342e;
@@ -12,36 +15,56 @@
   --accent: #d32f2f;
   --accent-secondary: #7e57c2;
 
-  /* Геометрия / сетка */
+  /* UI статусы */
+  --success: #2e7d32;
+  --warning: #f57c00;
+  --error: #c62828;
+  --info: #0277bd;
+
+  /* --- Геометрия --- */
   --container: 1200px;
   --radius-1: 12px;
   --radius-2: 16px;
   --radius-3: 24px;
 
-  /* Тени — более выразительные для глубины */
+  /* --- Тени --- */
   --shadow-1: 0 1px 3px rgba(0, 0, 0, 0.06), 0 8px 24px rgba(0, 0, 0, 0.08);
   --shadow-2: 0 4px 12px rgba(0, 0, 0, 0.08), 0 20px 48px rgba(0, 0, 0, 0.12);
   --shadow-3: 0 8px 32px rgba(0, 0, 0, 0.12), 0 32px 64px rgba(0, 0, 0, 0.16);
 
-  /* Движение — более плавные кривые */
+  /* --- Анимация и время --- */
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
   --dur-1: 150ms;
   --dur-2: 250ms;
   --dur-3: 400ms;
   --dur-4: 600ms;
 
-  /* Фокус */
+  /* Алиасы для переходов */
+  --transition-fast: var(--dur-1) var(--ease-out);
+  --transition-base: var(--dur-2) var(--ease-out);
+  --transition-slow: var(--dur-3) var(--ease-out);
+
+  /* --- Фокус --- */
   --focus-ring: 0 0 0 3px color-mix(in oklab, var(--accent) 25%, transparent);
 
-  /* Дополнительные цвета для UI */
-  --success: #2e7d32;
-  --warning: #f57c00;
-  --error: #c62828;
-  --info: #0277bd;
+  /* --- Типографика --- */
+  --font-body: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans",
+    sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  --font-display: var(--font-body);
+
+  /* --- Z-Index слои --- */
+  --z-base: 1;
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-modal: 300;
+  --z-toast: 400;
 }
 
+/* Переопределения для тёмной темы */
 @media (prefers-color-scheme: dark) {
   :root {
     --bg: #1a1816;
@@ -52,9 +75,19 @@
     --accent: #ff5252;
     --accent-secondary: #9575cd;
 
-    --shadow-1: 0 1px 3px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.5);
-    --shadow-2: 0 4px 12px rgba(0, 0, 0, 0.5), 0 20px 48px rgba(0, 0, 0, 0.6);
-    --shadow-3: 0 8px 32px rgba(0, 0, 0, 0.6), 0 32px 64px rgba(0, 0, 0, 0.7);
+    /* Более глубокие тени */
+    --shadow-1: 
+      0 1px 3px rgba(0, 0, 0, 0.5),
+      0 8px 24px rgba(0, 0, 0, 0.6),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+    --shadow-2: 
+      0 4px 12px rgba(0, 0, 0, 0.6),
+      0 20px 48px rgba(0, 0, 0, 0.7),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+    --shadow-3: 
+      0 8px 32px rgba(0, 0, 0, 0.7),
+      0 32px 64px rgba(0, 0, 0, 0.8),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.07);
 
     --focus-ring: 0 0 0 3px color-mix(in oklab, var(--accent) 35%, transparent);
 
@@ -65,7 +98,37 @@
   }
 }
 
-/* Reset / base */
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  :root {
+    --border: currentColor;
+  }
+}
+
+@media (prefers-contrast: more) {
+  :root {
+    --text: #000000;
+    --bg: #ffffff;
+    --border: #000000;
+    --accent: #c00000;
+    --success: #0066cc;
+    --warning: #ff6600;
+    --error: #cc0000;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --text: #ffffff;
+      --bg: #000000;
+      --border: #ffffff;
+      --accent: #ff4444;
+    }
+  }
+}
+
+/* ============================================
+   2. RESET & BASE STYLES
+   ============================================ */
 *,
 *::before,
 *::after {
@@ -82,21 +145,16 @@ html {
   scroll-padding-top: 80px;
 }
 
-html,
-body {
-  color: var(--text);
-  font-family: 
-    ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-    "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans",
-    sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
-  font-feature-settings: "kern" 1, "liga" 1;
+/* Firefox scrollbar (применяем к html, а не к *, для производительности) */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) var(--bg);
 }
 
 body {
   min-height: 100vh;
+  color: var(--text);
+  font-family: var(--font-body);
   background-color: var(--bg);
   background-image:
     radial-gradient(
@@ -118,6 +176,15 @@ body {
   background-size: 100% 100%;
   overflow-x: hidden;
 
+  /* Типографика base */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "kern" 1, "liga" 1;
+  text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  font-variant-ligatures: common-ligatures;
+
   transition: 
     background-color var(--dur-3) var(--ease-out),
     color var(--dur-3) var(--ease-out);
@@ -125,13 +192,100 @@ body {
   accent-color: var(--accent);
 }
 
-@media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
+/* Анимация появления страницы */
+@media (prefers-reduced-motion: no-preference) {
   body {
-    background-attachment: fixed;
+    background-attachment: fixed; /* Только для десктопа/не-мобайл по дефолту */
+    animation: bodyFadeIn 0.6s var(--ease-out);
   }
 }
 
-/* Links */
+/* ============================================
+   3. TYPOGRAPHY
+   ============================================ */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  color: var(--text);
+  text-wrap: balance;
+  position: relative;
+  transition: color var(--dur-2) var(--ease-out);
+}
+
+h1 { font-size: clamp(2rem, 5vw, 3.5rem); letter-spacing: -0.03em; }
+h2 { font-size: clamp(1.75rem, 4vw, 2.75rem); }
+h3 { font-size: clamp(1.5rem, 3vw, 2rem); }
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  h1:hover, h2:hover, h3:hover {
+    color: var(--accent);
+  }
+}
+
+p {
+  line-height: 1.7;
+  color: var(--text);
+  text-wrap: pretty;
+  max-width: 70ch;
+}
+
+strong { font-weight: 600; color: var(--text); }
+em { font-style: italic; color: var(--muted); }
+small { font-size: 0.875em; color: var(--muted); }
+
+code {
+  font-family: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, monospace;
+  font-size: 0.9em;
+  padding: 2px 6px;
+  background: color-mix(in oklab, var(--accent) 8%, transparent);
+  border-radius: 4px;
+  color: var(--accent);
+}
+
+/* Lists */
+ul, ol { padding-left: 1.5em; }
+li { line-height: 1.7; margin-bottom: 0.5em; }
+
+hr {
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+  margin: 2rem 0;
+}
+
+/* Selection */
+::selection {
+  background: color-mix(in oklab, var(--accent) 28%, transparent);
+  color: var(--text);
+}
+
+::-moz-selection {
+  background: color-mix(in oklab, var(--accent) 28%, transparent);
+  color: var(--text);
+}
+
+/* Тёмная тема для selection */
+@media (prefers-color-scheme: dark) {
+  ::selection { background: color-mix(in oklab, var(--accent) 35%, transparent); }
+  ::-moz-selection { background: color-mix(in oklab, var(--accent) 35%, transparent); }
+}
+
+/* ============================================
+   4. LAYOUT & CONTAINERS
+   ============================================ */
+.container {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+@media (min-width: 768px) { .container { padding: 0 32px; } }
+@media (min-width: 1280px) { .container { padding: 0 40px; } }
+
+/* ============================================
+   5. UI ELEMENTS (Links, Buttons, Inputs)
+   ============================================ */
 a {
   color: var(--accent);
   text-decoration: none;
@@ -139,32 +293,75 @@ a {
     opacity var(--dur-2) var(--ease-out),
     color var(--dur-2) var(--ease-out),
     transform var(--dur-2) var(--ease-out);
+  will-change: transform, opacity;
 }
 
-a:hover {
-  opacity: 0.9;
-}
+a:hover { opacity: 0.9; }
+a:active { opacity: 0.7; }
 
-a:active {
-  opacity: 0.7;
-}
-
-/* Buttons / form controls */
-button,
-input,
-select,
-textarea {
+/* Buttons & Form Controls */
+button, input, select, textarea {
   font: inherit;
   color: inherit;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
+/* Touch / mobile tweaks */
+button, a, input, select, textarea {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* GPU acceleration helper */
+.gpu-accelerated {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* Button specific */
 button {
   border: none;
   background: none;
   cursor: pointer;
+  position: relative;
+  overflow: hidden;
   transition: all var(--dur-2) var(--ease-out);
 }
 
+/* Рипл-эффект для кнопок при ховере */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  button:hover, a:hover {
+    transition-duration: var(--dur-1);
+  }
+
+  button::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: color-mix(in oklab, currentColor 15%, transparent);
+    transform: translate(-50%, -50%);
+    transition: width var(--dur-3) var(--ease-out), height var(--dur-3) var(--ease-out);
+    pointer-events: none;
+  }
+
+  button:hover::after {
+    width: 300px;
+    height: 300px;
+  }
+}
+
+/* Active state micro-interaction */
+@media (prefers-reduced-motion: no-preference) {
+  button:active { transform: scale(0.97); }
+}
+
+/* Disabled states */
 button:disabled,
 input:disabled,
 select:disabled,
@@ -182,18 +379,39 @@ textarea:disabled {
   z-index: 1;
 }
 
-/* Selection */
-::selection {
-  background: color-mix(in oklab, var(--accent) 28%, transparent);
-  color: var(--text);
+@media (prefers-reduced-motion: no-preference) {
+  :where(a, button, input, select, textarea):focus-visible {
+    animation: focusRingPulse 1.5s var(--ease-in-out) infinite;
+  }
 }
 
-::-moz-selection {
-  background: color-mix(in oklab, var(--accent) 28%, transparent);
-  color: var(--text);
+/* Placeholder */
+::placeholder { color: var(--muted); opacity: 0.65; }
+:-ms-input-placeholder { color: var(--muted); opacity: 0.65; }
+::-ms-input-placeholder { color: var(--muted); opacity: 0.65; }
+
+/* ============================================
+   6. MEDIA & IMAGES
+   ============================================ */
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
 }
 
-/* Scrollbar (WebKit) */
+img, video, iframe {
+  border-radius: var(--radius-1);
+}
+
+/* Lazy loading */
+img[loading="lazy"] {
+  opacity: 0;
+  animation: fadeIn var(--dur-3) var(--ease-out) forwards;
+}
+
+/* ============================================
+   7. SCROLLBARS (WebKit)
+   ============================================ */
 ::-webkit-scrollbar {
   width: 14px;
   height: 14px;
@@ -204,7 +422,12 @@ textarea:disabled {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--border);
+  background: var(--border); /* Fallback */
+  background: linear-gradient(
+    180deg,
+    var(--border),
+    color-mix(in oklab, var(--border) 80%, var(--accent))
+  );
   border-radius: 8px;
   border: 3px solid var(--bg);
   transition: background var(--dur-2) var(--ease-out);
@@ -218,183 +441,9 @@ textarea:disabled {
   background: var(--accent);
 }
 
-/* Firefox scrollbar */
-* {
-  scrollbar-width: thin;
-  scrollbar-color: var(--border) var(--bg);
-}
-
-/* Container */
-.container {
-  max-width: var(--container);
-  margin: 0 auto;
-  padding: 0 20px;
-}
-
-@media (min-width: 768px) {
-  .container {
-    padding: 0 32px;
-  }
-}
-
-@media (min-width: 1280px) {
-  .container {
-    padding: 0 40px;
-  }
-}
-
-/* Typography */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-weight: 700;
-  letter-spacing: -0.025em;
-  line-height: 1.15;
-  color: var(--text);
-  text-wrap: balance;
-}
-
-h1 {
-  font-size: clamp(2rem, 5vw, 3.5rem);
-  letter-spacing: -0.03em;
-}
-
-h2 {
-  font-size: clamp(1.75rem, 4vw, 2.75rem);
-}
-
-h3 {
-  font-size: clamp(1.5rem, 3vw, 2rem);
-}
-
-p {
-  line-height: 1.7;
-  color: var(--text);
-  text-wrap: pretty;
-  max-width: 70ch;
-}
-
-strong {
-  font-weight: 600;
-  color: var(--text);
-}
-
-em {
-  font-style: italic;
-  color: var(--muted);
-}
-
-small {
-  font-size: 0.875em;
-  color: var(--muted);
-}
-
-code {
-  font-family: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, monospace;
-  font-size: 0.9em;
-  padding: 2px 6px;
-  background: color-mix(in oklab, var(--accent) 8%, transparent);
-  border-radius: 4px;
-  color: var(--accent);
-}
-
-/* Touch / mobile tweaks */
-button,
-a,
-input,
-select,
-textarea {
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
-}
-
-@media (hover: hover) {
-  button:hover,
-  a:hover {
-    transition-duration: var(--dur-1);
-  }
-}
-
-/* Placeholder */
-::placeholder {
-  color: var(--muted);
-  opacity: 0.65;
-}
-
-:-ms-input-placeholder {
-  color: var(--muted);
-  opacity: 0.65;
-}
-
-::-ms-input-placeholder {
-  color: var(--muted);
-  opacity: 0.65;
-}
-
-/* Button micro-interaction */
-@media (prefers-reduced-motion: no-preference) {
-  button:active {
-    transform: scale(0.97);
-  }
-}
-
-/* Media без скачков */
-img,
-picture,
-video,
-canvas,
-svg {
-  display: block;
-  max-width: 100%;
-  height: auto;
-}
-
-img,
-video,
-iframe {
-  border-radius: var(--radius-1);
-}
-
-/* Lazy loading — плавное появление */
-img[loading="lazy"] {
-  opacity: 0;
-  animation: fadeIn var(--dur-3) var(--ease-out) forwards;
-}
-
-@keyframes fadeIn {
-  to {
-    opacity: 1;
-  }
-}
-
-/* Lists */
-ul,
-ol {
-  padding-left: 1.5em;
-}
-
-li {
-  line-height: 1.7;
-  margin-bottom: 0.5em;
-}
-
-/* Horizontal rule */
-hr {
-  border: none;
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    var(--border),
-    transparent
-  );
-  margin: 2rem 0;
-}
-
-/* Utility classes */
+/* ============================================
+   8. UTILITIES & CLASSES
+   ============================================ */
 .sr-only {
   position: absolute;
   width: 1px;
@@ -407,242 +456,7 @@ hr {
   border-width: 0;
 }
 
-/* Reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    transition-delay: 0ms !important;
-    scroll-behavior: auto !important;
-  }
-}
-
-/* High contrast mode support */
-@media (prefers-contrast: high) {
-  :root {
-    --border: currentColor;
-  }
-
-  a,
-  button {
-    text-decoration: underline;
-  }
-}
-
-/* Print styles */
-@media print {
-  body {
-    background: white;
-    color: black;
-  }
-
-  a {
-    text-decoration: underline;
-  }
-
-  img {
-    max-width: 100%;
-    page-break-inside: avoid;
-  }
-}
-
-
-/* Добавьте эти улучшения в существующий globals.css */
-
-/* ============================================
-   ДОПОЛНИТЕЛЬНЫЕ ПЕРЕМЕННЫЕ
-   ============================================ */
-
-:root {
-  /* Добавляем переменные для более тонкой настройки */
-  --transition-fast: var(--dur-1) var(--ease-out);
-  --transition-base: var(--dur-2) var(--ease-out);
-  --transition-slow: var(--dur-3) var(--ease-out);
-  
-  /* Улучшенная типографика */
-  --font-body: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-    "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans",
-    sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
-  --font-display: var(--font-body);
-  
-  /* Увеличенный z-index диапазон */
-  --z-base: 1;
-  --z-dropdown: 100;
-  --z-sticky: 200;
-  --z-modal: 300;
-  --z-toast: 400;
-}
-
-/* ============================================
-   УЛУЧШЕННАЯ АНИМАЦИЯ ЗАГРУЗКИ
-   ============================================ */
-
-/* Плавное появление при загрузке страницы */
-@media (prefers-reduced-motion: no-preference) {
-  body {
-    animation: bodyFadeIn 0.6s var(--ease-out);
-  }
-
-  @keyframes bodyFadeIn {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-}
-
-/* ============================================
-   УЛУЧШЕННЫЕ ИНТЕРАКТИВНЫЕ ЭЛЕМЕНТЫ
-   ============================================ */
-
-/* Более плавные переходы для всех интерактивных элементов */
-a,
-button,
-input,
-select,
-textarea {
-  will-change: transform, opacity;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-}
-
-/* Улучшенная кнопка с рипл-эффектом */
-button {
-  position: relative;
-  overflow: hidden;
-}
-
-@media (hover: hover) and (prefers-reduced-motion: no-preference) {
-  button::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    border-radius: 50%;
-    background: color-mix(in oklab, currentColor 15%, transparent);
-    transform: translate(-50%, -50%);
-    transition: width var(--dur-3) var(--ease-out), height var(--dur-3) var(--ease-out);
-  }
-
-  button:hover::after {
-    width: 300px;
-    height: 300px;
-  }
-}
-
-/* ============================================
-   УЛУЧШЕННАЯ ТИПОГРАФИКА
-   ============================================ */
-
-/* Более гладкое отображение текста */
-body {
-  text-size-adjust: 100%;
-  -webkit-text-size-adjust: 100%;
-  font-variant-ligatures: common-ligatures;
-}
-
-/* Улучшенные заголовки с плавным градиентом */
-h1,
-h2,
-h3 {
-  position: relative;
-  transition: color var(--dur-2) var(--ease-out);
-}
-
-@media (hover: hover) and (prefers-reduced-motion: no-preference) {
-  h1:hover,
-  h2:hover,
-  h3:hover {
-    color: var(--accent);
-  }
-}
-
-/* ============================================
-   УЛУЧШЕННЫЕ ФОКУС-СТИЛИ
-   ============================================ */
-
-/* Анимированное кольцо фокуса */
-@media (prefers-reduced-motion: no-preference) {
-  :where(a, button, input, select, textarea):focus-visible {
-    animation: focusRingPulse 1.5s var(--ease-in-out) infinite;
-  }
-
-  @keyframes focusRingPulse {
-    0%, 100% {
-      box-shadow: var(--focus-ring);
-    }
-    50% {
-      box-shadow: 0 0 0 6px color-mix(in oklab, var(--accent) 20%, transparent);
-    }
-  }
-}
-
-/* ============================================
-   УЛУЧШЕННЫЙ СКРОЛЛБАР
-   ============================================ */
-
-/* Анимация скроллбара */
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(
-    180deg,
-    var(--border),
-    color-mix(in oklab, var(--border) 80%, var(--accent))
-  );
-}
-
-/* ============================================
-   ДОПОЛНИТЕЛЬНЫЕ UTILITY CLASSES
-   ============================================ */
-
-/* Плавное появление */
-@media (prefers-reduced-motion: no-preference) {
-  .fade-in {
-    animation: fadeIn var(--dur-3) var(--ease-out);
-  }
-
-  .slide-up {
-    animation: slideUp var(--dur-3) var(--ease-out);
-  }
-
-  @keyframes slideUp {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .scale-in {
-    animation: scaleIn var(--dur-3) var(--ease-spring);
-  }
-
-  @keyframes scaleIn {
-    from {
-      opacity: 0;
-      transform: scale(0.95);
-    }
-    to {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-}
-
-/* Улучшенные тени для глубины */
+/* Shadows */
 .shadow-soft {
   box-shadow: 
     0 2px 8px color-mix(in oklab, var(--text) 4%, transparent),
@@ -661,133 +475,94 @@ h3 {
     0 24px 48px color-mix(in oklab, var(--text) 12%, transparent);
 }
 
-/* ============================================
-   ОПТИМИЗАЦИЯ ПРОИЗВОДИТЕЛЬНОСТИ
-   ============================================ */
-
-/* GPU-ускорение для анимаций */
+/* Animation Utilities */
 @media (prefers-reduced-motion: no-preference) {
-  .gpu-accelerated,
-  button,
-  a {
-    transform: translateZ(0);
-    will-change: transform;
-  }
+  .fade-in { animation: fadeIn var(--dur-3) var(--ease-out); }
+  .slide-up { animation: slideUp var(--dur-3) var(--ease-out); }
+  .scale-in { animation: scaleIn var(--dur-3) var(--ease-spring); }
 }
 
 /* ============================================
-   ТЕМНАЯ ТЕМА - УЛУЧШЕНИЯ
+   9. KEYFRAMES
    ============================================ */
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
 
-@media (prefers-color-scheme: dark) {
-  /* Более мягкие тени для темной темы */
-  :root {
-    --shadow-1: 
-      0 1px 3px rgba(0, 0, 0, 0.5),
-      0 8px 24px rgba(0, 0, 0, 0.6),
-      inset 0 0 0 1px rgba(255, 255, 255, 0.03);
-    --shadow-2: 
-      0 4px 12px rgba(0, 0, 0, 0.6),
-      0 20px 48px rgba(0, 0, 0, 0.7),
-      inset 0 0 0 1px rgba(255, 255, 255, 0.05);
-    --shadow-3: 
-      0 8px 32px rgba(0, 0, 0, 0.7),
-      0 32px 64px rgba(0, 0, 0, 0.8),
-      inset 0 0 0 1px rgba(255, 255, 255, 0.07);
-  }
+@keyframes bodyFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
 
-  /* Более яркие акценты в темной теме */
-  ::selection {
-    background: color-mix(in oklab, var(--accent) 35%, transparent);
-  }
+@keyframes focusRingPulse {
+  0%, 100% { box-shadow: var(--focus-ring); }
+  50% { box-shadow: 0 0 0 6px color-mix(in oklab, var(--accent) 20%, transparent); }
+}
 
-  ::-moz-selection {
-    background: color-mix(in oklab, var(--accent) 35%, transparent);
-  }
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
 }
 
 /* ============================================
-   ACCESSIBILITY IMPROVEMENTS
+   10. MEDIA QUERIES (System)
    ============================================ */
 
-/* Улучшенная видимость для пользователей с нарушениями зрения */
-@media (prefers-contrast: more) {
-  :root {
-    --text: #000000;
-    --bg: #ffffff;
-    --border: #000000;
-    --accent: #c00000;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --text: #ffffff;
-      --bg: #000000;
-      --border: #ffffff;
-      --accent: #ff4444;
-    }
-  }
-
-  a,
-  button {
-    text-decoration: underline;
-    text-decoration-thickness: 2px;
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+    scroll-behavior: auto !important;
   }
 }
 
-/* Улучшенный режим для дальтоников */
-@media (prefers-contrast: more) {
-  :root {
-    --success: #0066cc;
-    --warning: #ff6600;
-    --error: #cc0000;
-  }
-}
-
-/* ============================================
-   MOBILE OPTIMIZATIONS
-   ============================================ */
-
+/* Mobile optimizations */
 @media (max-width: 767px) {
-  /* Увеличиваем размер тач-целей */
-  button,
-  a,
-  input,
-  select {
+  /* Увеличиваем размер тач-целей только для интерактивных элементов */
+  button, input, select {
     min-height: 44px;
     min-width: 44px;
   }
+  
+  /* Примечание: Убрали 'a' из принудительной ширины 44px, 
+     чтобы не ломать строчные ссылки в тексте. */
 
-  /* Убираем анимации на мобильных для производительности */
+  /* Убираем тяжелые анимации на мобильных */
   @media (prefers-reduced-motion: no-preference) {
-    body {
-      animation: none;
-    }
+    body { animation: none; }
   }
 }
 
-/* ============================================
-   PRINT IMPROVEMENTS
-   ============================================ */
-
+/* Print styles */
 @media print {
-  /* Убираем тени для экономии чернил */
-  * {
+  body { background: white; color: black; }
+  
+  *, *::before, *::after {
     box-shadow: none !important;
     text-shadow: none !important;
+    background: transparent !important;
   }
 
-  /* Улучшаем контрастность */
-  :root {
-    --text: #000000;
-    --bg: #ffffff;
-    --muted: #333333;
-  }
-
-  /* Показываем URL для ссылок */
+  a { text-decoration: underline; color: black; }
+  
   a[href^="http"]::after {
     content: " (" attr(href) ")";
     font-size: 0.875em;
     color: #666;
   }
+
+  img { max-width: 100%; page-break-inside: avoid; }
+  
+  /* Скрываем декоративные элементы при печати */
+  button, video, iframe, .sr-only { display: none; }
 }

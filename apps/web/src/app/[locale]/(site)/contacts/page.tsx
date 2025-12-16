@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { t, isLocale, defaultLocale, type Locale } from "@/lib/i18n";
-import page from "@/styles/Page.module.css";
+import page from "./Page.module.css";
 
 export const dynamicParams = false;
 

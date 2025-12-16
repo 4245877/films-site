@@ -1,305 +1,663 @@
+/* ============================================
+   NEWS PAGE STYLES
+   Modern, lightweight, dynamic design
+   ============================================ */
+
+/* ============================================
+   1. HERO SECTION
+   ============================================ */
 .hero {
-  margin-top: 10px;
+  padding: clamp(3rem, 8vw, 6rem) 0 clamp(2rem, 5vw, 4rem);
+  max-width: var(--container);
+  margin: 0 auto;
+  position: relative;
 }
 
+@media (prefers-reduced-motion: no-preference) {
+  .hero {
+    animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+}
+
+/* ============================================
+   2. TOOLS (Search + Filters)
+   ============================================ */
 .tools {
-  margin-top: 14px;
-  display: grid;
-  gap: 12px;
+  margin-top: clamp(2rem, 4vw, 3rem);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
 }
 
+/* Search Form */
 .search {
   display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 600px;
 }
 
 .searchInput {
-  flex: 1 1 320px;
-  min-width: 220px;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 12px 12px;
+  flex: 1;
+  padding: 0.875rem 1.25rem;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-1);
   background: var(--panel);
   color: var(--text);
-  outline: none;
+  font-size: 1rem;
+  transition: all var(--transition-base);
+  backdrop-filter: blur(20px);
 }
 
-.searchInput::placeholder {
-  color: var(--muted);
+.searchInput:hover {
+  border-color: color-mix(in oklab, var(--accent) 40%, var(--border));
+  transform: translateY(-1px);
+}
+
+.searchInput:focus {
+  border-color: var(--accent);
+  background: color-mix(in oklab, var(--accent) 3%, var(--panel));
+  box-shadow: 
+    var(--focus-ring),
+    0 4px 16px color-mix(in oklab, var(--accent) 12%, transparent);
 }
 
 .searchBtn {
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 12px 14px;
+  padding: 0.875rem 1.75rem;
+  border-radius: var(--radius-1);
   background: var(--accent);
   color: white;
-  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all var(--transition-base);
+  box-shadow: 0 2px 8px color-mix(in oklab, var(--accent) 30%, transparent);
+  position: relative;
+  overflow: hidden;
+}
+
+.searchBtn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    transparent,
+    color-mix(in oklab, white 20%, transparent)
+  );
+  opacity: 0;
+  transition: opacity var(--transition-fast);
 }
 
 .searchBtn:hover {
-  opacity: 0.92;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px color-mix(in oklab, var(--accent) 40%, transparent);
+}
+
+.searchBtn:hover::before {
+  opacity: 1;
+}
+
+.searchBtn:active {
+  transform: translateY(0);
 }
 
 .primaryBtn {
-  border-color: var(--accent);
+  background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
 }
 
+/* Filters */
 .filters {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 0.625rem;
 }
 
 .chip {
-  display: inline-flex;
-  padding: 10px 12px;
-  border-radius: 999px;
-  border: 1px solid var(--border);
+  padding: 0.5rem 1rem;
+  border-radius: 100px;
   background: var(--panel);
-  color: var(--muted);
-  text-decoration: none;
+  border: 1.5px solid var(--border);
+  color: var(--text);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  transition: all var(--transition-base);
+  backdrop-filter: blur(12px);
+  position: relative;
+  overflow: hidden;
+}
+
+.chip::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    color-mix(in oklab, var(--accent) 8%, transparent),
+    color-mix(in oklab, var(--accent-secondary) 8%, transparent)
+  );
+  opacity: 0;
+  transition: opacity var(--transition-base);
 }
 
 .chip:hover {
-  opacity: 0.9;
-  color: var(--text);
-  text-decoration: none;
   border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px color-mix(in oklab, var(--accent) 20%, transparent);
 }
 
+.chip:hover::before {
+  opacity: 1;
+}
+
+.chip:active {
+  transform: translateY(0);
+}
+
+/* Quick Links */
 .quickLinks {
-  margin-top: 10px;
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 1.5rem;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
 }
 
 .quickLink {
-  color: var(--muted);
-  text-decoration: none;
-  border-bottom: 1px dashed var(--border);
-  padding-bottom: 2px;
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  transition: all var(--transition-base);
+  position: relative;
+}
+
+.quickLink::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-secondary));
+  transition: width var(--transition-base);
+}
+
+.quickLink:hover::after {
+  width: 100%;
 }
 
 .quickLink:hover {
-  color: var(--text);
-  border-bottom-color: var(--accent);
-  text-decoration: none;
+  transform: translateX(4px);
 }
 
+/* ============================================
+   3. SECTION LAYOUT
+   ============================================ */
 .sectionHeader {
-  margin-bottom: 12px;
+  margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
 }
 
 .sectionHeaderRow {
   display: flex;
-  align-items: baseline;
   justify-content: space-between;
-  gap: 12px;
+  align-items: center;
+  margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
   flex-wrap: wrap;
-  margin-bottom: 12px;
+  gap: 1rem;
 }
 
 .hint {
   color: var(--muted);
-  font-size: 13px;
+  font-size: 0.875rem;
+  font-style: italic;
+  opacity: 0.8;
 }
 
+/* ============================================
+   4. FEATURED NEWS CARD
+   ============================================ */
 .featured {
   display: block;
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 14px;
+  padding: clamp(1.75rem, 4vw, 2.5rem);
+  border-radius: var(--radius-2);
   background: var(--panel);
-  text-decoration: none;
+  border: 2px solid var(--border);
+  transition: all var(--transition-slow);
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(20px);
+}
+
+.featured::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    color-mix(in oklab, var(--accent) 6%, transparent),
+    transparent 40%,
+    color-mix(in oklab, var(--accent-secondary) 6%, transparent)
+  );
+  opacity: 0;
+  transition: opacity var(--transition-slow);
 }
 
 .featured:hover {
-  text-decoration: none;
-  border-color: var(--accent-secondary);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+  border-color: var(--accent);
+  transform: translateY(-4px);
+  box-shadow: 
+    0 12px 32px color-mix(in oklab, var(--accent) 18%, transparent),
+    0 0 0 1px color-mix(in oklab, var(--accent) 20%, transparent);
+}
+
+.featured:hover::before {
+  opacity: 1;
 }
 
 .featuredTop {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-bottom: 8px;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  position: relative;
+  z-index: 1;
 }
 
 .badgeType {
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  padding: 6px 10px;
-  color: var(--muted);
-  font-size: 12px;
-  background: var(--bg);
+  padding: 0.375rem 0.875rem;
+  border-radius: 100px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+  color: white;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  text-transform: lowercase;
+  letter-spacing: 0.02em;
+  box-shadow: 0 2px 8px color-mix(in oklab, var(--accent) 30%, transparent);
 }
 
 .date {
   color: var(--muted);
-  font-size: 13px;
+  font-size: 0.875rem;
+  font-weight: 500;
 }
 
 .featuredTitle {
-  color: var(--text);
+  font-size: clamp(1.5rem, 3.5vw, 2rem);
   font-weight: 700;
-  font-size: 18px;
-  line-height: 1.3;
-  margin-bottom: 8px;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  margin-bottom: 0.875rem;
+  position: relative;
+  z-index: 1;
+  transition: color var(--transition-base);
+}
+
+.featured:hover .featuredTitle {
+  color: var(--accent);
 }
 
 .featuredLead {
+  font-size: 1.0625rem;
+  line-height: 1.65;
   color: var(--muted);
-  line-height: 1.7;
+  margin-bottom: 1.25rem;
+  position: relative;
+  z-index: 1;
 }
 
+/* ============================================
+   5. NEWS FEED
+   ============================================ */
 .feed {
   display: grid;
-  gap: 12px;
+  gap: clamp(1.25rem, 2.5vw, 1.75rem);
 }
 
 .item {
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 12px;
+  padding: clamp(1.25rem, 3vw, 1.75rem);
+  border-radius: var(--radius-1);
   background: var(--panel);
+  border: 1.5px solid var(--border);
+  transition: all var(--transition-base);
+  backdrop-filter: blur(12px);
+  position: relative;
+  overflow: hidden;
+}
+
+.item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  background: linear-gradient(180deg, var(--accent), var(--accent-secondary));
+  transition: width var(--transition-base);
+}
+
+.item:hover {
+  border-color: var(--accent);
+  transform: translateX(4px);
+  box-shadow: 0 8px 24px color-mix(in oklab, var(--accent) 12%, transparent);
+}
+
+.item:hover::before {
+  width: 4px;
 }
 
 .itemTop {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 8px;
+  gap: 0.5rem;
+  margin-bottom: 0.875rem;
+  font-size: 0.875rem;
+  position: relative;
+  z-index: 1;
 }
 
 .typeLink {
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  padding: 6px 10px;
-  font-size: 12px;
-  color: var(--muted);
-  text-decoration: none;
-  background: var(--bg);
+  color: var(--accent);
+  font-weight: 600;
+  text-transform: lowercase;
+  transition: all var(--transition-fast);
+  padding: 0.125rem 0.5rem;
+  border-radius: 4px;
+  background: color-mix(in oklab, var(--accent) 8%, transparent);
 }
 
 .typeLink:hover {
-  border-color: var(--accent);
-  color: var(--text);
-  text-decoration: none;
+  background: color-mix(in oklab, var(--accent) 15%, transparent);
+  transform: scale(1.05);
 }
 
 .dot {
-  color: var(--muted);
+  color: var(--border);
+  font-weight: 700;
 }
 
 .read {
   color: var(--muted);
-  font-size: 13px;
+  font-size: 0.8125rem;
 }
 
 .itemTitle {
-  display: inline-block;
+  display: block;
+  font-size: clamp(1.125rem, 2vw, 1.375rem);
   font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.015em;
   color: var(--text);
-  text-decoration: none;
-  line-height: 1.35;
-  margin-bottom: 6px;
+  margin-bottom: 0.75rem;
+  transition: color var(--transition-base);
+  position: relative;
+  z-index: 1;
 }
 
 .itemTitle:hover {
-  text-decoration: none;
   color: var(--accent);
 }
 
 .itemLead {
-  margin: 0;
   color: var(--muted);
-  line-height: 1.7;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  position: relative;
+  z-index: 1;
 }
 
+/* ============================================
+   6. TAGS
+   ============================================ */
 .tags {
-  margin-top: 10px;
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 0.5rem;
+  position: relative;
+  z-index: 1;
 }
 
 .tag {
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  padding: 6px 10px;
-  font-size: 12px;
-  color: var(--muted);
-  background: var(--panel);
+  padding: 0.25rem 0.75rem;
+  border-radius: 100px;
+  background: color-mix(in oklab, var(--accent-secondary) 8%, transparent);
+  color: var(--accent-secondary);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  border: 1px solid color-mix(in oklab, var(--accent-secondary) 20%, transparent);
 }
 
 .tagLink {
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  padding: 6px 10px;
-  font-size: 12px;
-  color: var(--muted);
-  background: var(--panel);
-  text-decoration: none;
+  padding: 0.25rem 0.75rem;
+  border-radius: 100px;
+  background: color-mix(in oklab, var(--accent-secondary) 8%, transparent);
+  color: var(--accent-secondary);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  border: 1px solid color-mix(in oklab, var(--accent-secondary) 20%, transparent);
+  transition: all var(--transition-base);
 }
 
 .tagLink:hover {
+  background: color-mix(in oklab, var(--accent-secondary) 15%, transparent);
   border-color: var(--accent-secondary);
-  color: var(--text);
-  text-decoration: none;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px color-mix(in oklab, var(--accent-secondary) 20%, transparent);
 }
 
+/* ============================================
+   7. ACTIONS
+   ============================================ */
 .actions {
-  margin-top: 14px;
   display: flex;
-  gap: 10px;
+  gap: 1rem;
+  margin-top: clamp(2rem, 4vw, 3rem);
   flex-wrap: wrap;
 }
 
 .button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 12px 14px;
-  border-radius: 12px;
-  border: 1px solid var(--border);
+  padding: 0.875rem 1.75rem;
+  border-radius: var(--radius-1);
   background: var(--panel);
+  border: 2px solid var(--border);
   color: var(--text);
-  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all var(--transition-base);
+  text-align: center;
+  display: inline-block;
 }
 
 .button:hover {
-  text-decoration: none;
   border-color: var(--accent);
+  background: color-mix(in oklab, var(--accent) 5%, var(--panel));
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px color-mix(in oklab, var(--accent) 15%, transparent);
 }
 
-.primary {
-  background: var(--accent);
-  border-color: var(--accent);
+.button.primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+  border-color: transparent;
   color: white;
+  box-shadow: 0 4px 16px color-mix(in oklab, var(--accent) 25%, transparent);
 }
 
-.primary:hover {
-  opacity: 0.92;
+.button.primary:hover {
+  box-shadow: 0 8px 24px color-mix(in oklab, var(--accent) 35%, transparent);
+  transform: translateY(-3px);
 }
 
+/* ============================================
+   8. SUBSCRIBE SECTION
+   ============================================ */
 .subscribe {
-  margin-top: 12px;
   display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 1.5rem 0;
+  max-width: 600px;
 }
 
 .small {
-  margin-top: 10px;
+  font-size: 0.875rem;
   color: var(--muted);
-  font-size: 13px;
   line-height: 1.6;
+  margin-top: 1rem;
+}
+
+/* ============================================
+   9. RESPONSIVE DESIGN
+   ============================================ */
+
+/* Tablet & Up */
+@media (min-width: 768px) {
+  .tools {
+    gap: 1.5rem;
+  }
+
+  .search {
+    max-width: 100%;
+  }
+
+  .feed {
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  }
+
+  .item:hover {
+    transform: translateY(-4px) translateX(0);
+  }
+
+  .actions {
+    justify-content: flex-start;
+  }
+
+  .button {
+    min-width: 160px;
+  }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+  .hero {
+    padding: clamp(4rem, 10vw, 7rem) 0 clamp(3rem, 6vw, 5rem);
+  }
+
+  .quickLinks {
+    gap: 2rem;
+  }
+}
+
+/* Large Desktop */
+@media (min-width: 1280px) {
+  .feed {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ============================================
+   10. ANIMATIONS (Staggered Entry)
+   ============================================ */
+@media (prefers-reduced-motion: no-preference) {
+  .item {
+    animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  }
+
+  .item:nth-child(1) { animation-delay: 0.05s; }
+  .item:nth-child(2) { animation-delay: 0.1s; }
+  .item:nth-child(3) { animation-delay: 0.15s; }
+  .item:nth-child(4) { animation-delay: 0.2s; }
+  .item:nth-child(5) { animation-delay: 0.25s; }
+  .item:nth-child(6) { animation-delay: 0.3s; }
+
+  .chip {
+    animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  }
+
+  .chip:nth-child(1) { animation-delay: 0.1s; }
+  .chip:nth-child(2) { animation-delay: 0.15s; }
+  .chip:nth-child(3) { animation-delay: 0.2s; }
+  .chip:nth-child(4) { animation-delay: 0.25s; }
+  .chip:nth-child(5) { animation-delay: 0.3s; }
+  .chip:nth-child(6) { animation-delay: 0.35s; }
+  .chip:nth-child(7) { animation-delay: 0.4s; }
+
+  .featured {
+    animation: scaleIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s backwards;
+  }
+
+  .quickLink {
+    animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  }
+
+  .quickLink:nth-child(1) { animation-delay: 0.3s; }
+  .quickLink:nth-child(2) { animation-delay: 0.35s; }
+  .quickLink:nth-child(3) { animation-delay: 0.4s; }
+}
+
+/* ============================================
+   11. ACCESSIBILITY ENHANCEMENTS
+   ============================================ */
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .chip,
+  .button,
+  .item,
+  .featured {
+    border-width: 2px;
+  }
+
+  .badgeType {
+    border: 2px solid currentColor;
+  }
+}
+
+/* Focus Improvements */
+.searchInput:focus,
+.chip:focus-visible,
+.button:focus-visible,
+.itemTitle:focus-visible,
+.typeLink:focus-visible,
+.tagLink:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Print Styles */
+@media print {
+  .tools,
+  .quickLinks,
+  .actions,
+  .subscribe {
+    display: none;
+  }
+
+  .item,
+  .featured {
+    border: 1px solid #000;
+    box-shadow: none;
+    page-break-inside: avoid;
+  }
+}
+
+/* ============================================
+   12. LOADING STATES (Optional Enhancement)
+   ============================================ */
+@keyframes shimmer {
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
+
+.loading {
+  background: linear-gradient(
+    90deg,
+    var(--panel) 0%,
+    color-mix(in oklab, var(--border) 50%, var(--panel)) 50%,
+    var(--panel) 100%
+  );
+  background-size: 2000px 100%;
+  animation: shimmer 2s infinite linear;
 }
