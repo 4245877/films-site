@@ -69,3 +69,6 @@ Thumbs.db
 .vscode/
 .idea/
 *.iml
+
+# Игнорируем папку API, так как деплоимся на GitHub Pages (статику)
+apps/web/src/app/api/
