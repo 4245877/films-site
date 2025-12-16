@@ -104,7 +104,7 @@ export default async function About({
         </div>
 
         <div className={page.actions} style={{ borderTop: '1px solid var(--border)', paddingTop: '1.5rem', marginTop: '1.5rem' }}>
-           <Link className={`${page.button} ${page.primary}`} href={`/${safeLocale}/catalog`}>
+           <Link className={`${page.button} ${page.primary}`} href={`/${safeLocale}/catalog`}> 
              Перейти до каталогу
            </Link>
            <Link className={page.button} href={`/${safeLocale}/contacts`}>
