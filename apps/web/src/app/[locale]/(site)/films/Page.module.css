@@ -1,0 +1,517 @@
+/* ============================================
+   FILM TYPES PAGE STYLES
+   Modern, dynamic, lightweight design
+   ============================================ */
+
+.page {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: clamp(1rem, 2.5vw, 1.5rem);
+}
+
+.hero {
+  margin-top: 14px;
+  margin-bottom: clamp(1.25rem, 3vw, 2rem);
+  padding: clamp(1rem, 2.5vw, 1.25rem);
+  border-radius: var(--radius-2, 16px);
+  border: 1px solid var(--border, rgba(0, 0, 0, 0.12));
+  background:
+    radial-gradient(
+      900px 240px at 10% 0%,
+      color-mix(in oklab, var(--accent, #6d6df6) 10%, transparent),
+      transparent 60%
+    ),
+    var(--panel, rgba(0, 0, 0, 0.02));
+  box-shadow: var(--shadow-1, 0 6px 18px rgba(0, 0, 0, 0.08));
+}
+
+.h1 {
+  margin: 0;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+.heroText {
+  margin: 0.6rem 0 0;
+  color: var(--muted, rgba(0, 0, 0, 0.72));
+  line-height: 1.55;
+  max-width: 70ch;
+}
+
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.9rem;
+}
+
+.stat {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding: 0.55rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid var(--border, rgba(0, 0, 0, 0.12));
+  background: color-mix(in oklab, var(--panel, #fff) 96%, transparent);
+  box-shadow: var(--shadow-0, 0 2px 8px rgba(0, 0, 0, 0.06));
+}
+
+.statValue {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--text, rgba(0, 0, 0, 0.92));
+}
+
+.statLabel {
+  color: var(--muted, rgba(0, 0, 0, 0.68));
+  font-size: 0.95rem;
+}
+
+/* ============================================
+   GRID LAYOUT
+   ============================================ */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: clamp(1.25rem, 3vw, 2rem);
+  margin-top: clamp(1.25rem, 2.5vw, 1.75rem);
+  margin-bottom: clamp(2.25rem, 4vw, 3rem);
+  position: relative;
+}
+
+/* Адаптивная сетка для разных экранов */
+@media (max-width: 767px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 1.1rem;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  }
+}
+
+/* ============================================
+   CARD COMPONENT
+   ============================================ */
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: clamp(1.35rem, 3vw, 1.85rem);
+  background: var(--panel, rgba(0, 0, 0, 0.02));
+  border-radius: var(--radius-2, 16px);
+  border: 1px solid var(--border, rgba(0, 0, 0, 0.12));
+  box-shadow: var(--shadow-1, 0 6px 18px rgba(0, 0, 0, 0.08));
+  overflow: hidden;
+  cursor: pointer;
+  transition:
+    transform var(--transition-base, 180ms ease),
+    box-shadow var(--transition-base, 180ms ease),
+    border-color var(--transition-base, 180ms ease),
+    background-color var(--transition-base, 180ms ease);
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Декоративный градиент-акцент */
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent, #6d6df6), var(--accent-secondary, #44c7ff));
+  opacity: 0;
+  transition: opacity var(--transition-base, 180ms ease);
+}
+
+/* Подсветка фона при наведении */
+.card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    color-mix(in oklab, var(--accent, #6d6df6) 8%, transparent) 0%,
+    transparent 50%
+  );
+  opacity: 0;
+  transition: opacity var(--dur-3, 220ms) var(--ease-out, ease-out);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ============================================
+   CARD INTERACTIONS
+   ============================================ */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .card:hover {
+    transform: translateY(-4px) scale(1.01);
+    box-shadow: var(--shadow-2, 0 14px 36px rgba(0, 0, 0, 0.14));
+    border-color: color-mix(in oklab, var(--accent, #6d6df6) 30%, var(--border, rgba(0, 0, 0, 0.12)));
+    background-color: color-mix(in oklab, var(--panel, #fff) 98%, var(--accent, #6d6df6));
+  }
+
+  .card:hover::before {
+    opacity: 1;
+  }
+
+  .card:hover::after {
+    opacity: 1;
+  }
+
+  .card:hover .cardTitle {
+    color: var(--accent, #6d6df6);
+    transform: translateX(4px);
+  }
+
+  .card:hover .cardTitle::after {
+    transform: translateX(4px);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .card:active {
+    transform: translateY(-2px) scale(0.99);
+    transition-duration: var(--dur-1, 120ms);
+  }
+}
+
+.card:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring, 0 0 0 4px rgba(109, 109, 246, 0.25)), var(--shadow-2, 0 14px 36px rgba(0, 0, 0, 0.14));
+  border-color: var(--accent, #6d6df6);
+}
+
+/* ============================================
+   CARD TITLE
+   ============================================ */
+.cardTitle {
+  position: relative;
+  z-index: 1;
+  font-size: clamp(1.2rem, 2.5vw, 1.45rem);
+  font-weight: 650;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  color: var(--text, rgba(0, 0, 0, 0.92));
+  transition:
+    color var(--transition-base, 180ms ease),
+    transform var(--transition-base, 180ms ease);
+  text-wrap: balance;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.cardTitle::after {
+  content: "→";
+  display: inline-block;
+  font-size: 1.15em;
+  opacity: 0;
+  transition:
+    transform var(--transition-base, 180ms ease),
+    opacity var(--transition-base, 180ms ease);
+  will-change: transform, opacity;
+}
+
+/* ============================================
+   CARD TEXT
+   ============================================ */
+.cardText {
+  position: relative;
+  z-index: 1;
+  font-size: clamp(0.92rem, 1.8vw, 1rem);
+  line-height: 1.6;
+  color: var(--muted, rgba(0, 0, 0, 0.7));
+  transition: color var(--transition-base, 180ms ease);
+  text-wrap: pretty;
+  max-width: 55ch;
+}
+
+@media (hover: hover) {
+  .card:hover .cardText {
+    color: var(--text, rgba(0, 0, 0, 0.92));
+  }
+}
+
+/* ============================================
+   CARD META
+   ============================================ */
+.cardMetaRow {
+  position: relative;
+  z-index: 1;
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 0.25rem;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid var(--border, rgba(0, 0, 0, 0.12));
+  background: color-mix(in oklab, var(--panel, #fff) 96%, transparent);
+  box-shadow: var(--shadow-0, 0 2px 8px rgba(0, 0, 0, 0.06));
+  font-size: 0.86rem;
+  color: var(--muted, rgba(0, 0, 0, 0.72));
+}
+
+/* ============================================
+   SECTION (HOW TO)
+   ============================================ */
+.section {
+  margin-top: clamp(1.75rem, 3vw, 2.25rem);
+  padding-top: clamp(1.1rem, 2vw, 1.35rem);
+  border-top: 1px solid var(--border, rgba(0, 0, 0, 0.12));
+}
+
+.sectionTitle {
+  margin: 0 0 0.65rem;
+  font-size: 1rem;
+  letter-spacing: -0.01em;
+  color: var(--text, rgba(0, 0, 0, 0.92));
+}
+
+.list {
+  margin: 0;
+  padding-left: 1.1rem;
+  line-height: 1.6;
+  color: var(--text, rgba(0, 0, 0, 0.92));
+}
+
+.list li {
+  margin: 0.35rem 0;
+}
+
+.note {
+  margin: 0.8rem 0 0;
+  color: var(--muted, rgba(0, 0, 0, 0.68));
+  font-size: 0.92rem;
+}
+
+/* ============================================
+   LOADING / SKELETON STATES
+   ============================================ */
+.grid[data-loading="true"] .card {
+  pointer-events: none;
+  animation: pulse 2s var(--ease-in-out, ease-in-out) infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+/* ============================================
+   ANIMATIONS (appear on load)
+   ============================================ */
+@media (prefers-reduced-motion: no-preference) {
+  .card {
+    animation: cardAppear var(--dur-4, 420ms) var(--ease-out, ease-out) backwards;
+  }
+
+  .card:nth-child(1) { animation-delay: 0ms; }
+  .card:nth-child(2) { animation-delay: 80ms; }
+  .card:nth-child(3) { animation-delay: 160ms; }
+  .card:nth-child(4) { animation-delay: 240ms; }
+  .card:nth-child(5) { animation-delay: 320ms; }
+  .card:nth-child(6) { animation-delay: 400ms; }
+  .card:nth-child(7) { animation-delay: 480ms; }
+  .card:nth-child(8) { animation-delay: 560ms; }
+  .card:nth-child(9) { animation-delay: 640ms; }
+  .card:nth-child(n + 10) { animation-delay: 720ms; }
+
+  @keyframes cardAppear {
+    from {
+      opacity: 0;
+      transform: translateY(24px) scale(0.96);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+}
+
+/* ============================================
+   EMPTY STATE
+   ============================================ */
+.grid:empty::after {
+  content: attr(data-empty-message);
+  display: block;
+  grid-column: 1 / -1;
+  padding: clamp(3rem, 6vw, 5rem) 1.5rem;
+  text-align: center;
+  color: var(--muted, rgba(0, 0, 0, 0.68));
+  font-size: clamp(1rem, 2vw, 1.125rem);
+}
+
+/* ============================================
+   RESPONSIVE TOUCH IMPROVEMENTS
+   ============================================ */
+@media (max-width: 767px) {
+  .hero {
+    padding: 1rem;
+  }
+
+  .card {
+    padding: 1.2rem;
+    min-height: 140px;
+  }
+
+  .cardTitle {
+    font-size: 1.125rem;
+  }
+
+  .cardText {
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .card {
+      animation-duration: var(--dur-3, 320ms);
+    }
+  }
+}
+
+/* ============================================
+   TOUCH DEVICES OPTIMIZATION
+   ============================================ */
+@media (hover: none) {
+  .card:hover {
+    transform: none;
+  }
+
+  .card:active {
+    transform: scale(0.98);
+    transition-duration: var(--dur-1, 120ms);
+  }
+
+  .cardTitle::after {
+    opacity: 0.55;
+  }
+}
+
+/* ============================================
+   HIGH CONTRAST MODE
+   ============================================ */
+@media (prefers-contrast: high) {
+  .hero {
+    border-width: 2px;
+  }
+
+  .card {
+    border-width: 2px;
+  }
+
+  .card::before {
+    opacity: 1;
+    height: 4px;
+  }
+
+  .cardTitle::after {
+    opacity: 1;
+  }
+}
+
+/* ============================================
+   DARK MODE ADJUSTMENTS
+   ============================================ */
+@media (prefers-color-scheme: dark) {
+  .hero {
+    background:
+      radial-gradient(
+        900px 240px at 10% 0%,
+        color-mix(in oklab, var(--accent, #6d6df6) 14%, transparent),
+        transparent 60%
+      ),
+      color-mix(in oklab, var(--panel, rgba(255, 255, 255, 0.06)) 95%, transparent);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  .card {
+    background: color-mix(in oklab, var(--panel, rgba(255, 255, 255, 0.06)) 95%, transparent);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  @media (hover: hover) {
+    .card:hover {
+      background: color-mix(in oklab, var(--panel, rgba(255, 255, 255, 0.06)) 100%, var(--accent, #6d6df6) 3%);
+    }
+  }
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+@media print {
+  .hero {
+    box-shadow: none;
+    background: transparent;
+  }
+
+  .grid {
+    display: block;
+  }
+
+  .card {
+    page-break-inside: avoid;
+    box-shadow: none;
+    border: 1px solid #ccc;
+    margin-bottom: 1rem;
+  }
+
+  .card::before,
+  .card::after {
+    display: none;
+  }
+
+  .cardTitle::after {
+    display: none;
+  }
+}
+
+/* ============================================
+   REDUCED MOTION FALLBACKS
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .cardTitle,
+  .cardText,
+  .card::before,
+  .card::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .card:hover {
+    transform: none;
+  }
+}
