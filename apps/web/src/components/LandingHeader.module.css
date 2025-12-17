@@ -1,24 +1,344 @@
+/* apps/web/src/components/LandingHeader.module.css */
+
+/* ============================================
+   LANDING HEADER
+   ============================================ */
+
 .header {
-  border-bottom: 1px solid var(--border);
-  background: rgba(17, 24, 38, 0.55);
-  backdrop-filter: blur(8px);
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: var(--z-sticky);
+  
+  /* Глассморфизм эффект */
+  background: color-mix(in oklab, var(--panel) 75%, transparent);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  
+  /* Тонкая граница снизу */
+  border-bottom: 1px solid color-mix(in oklab, var(--border) 40%, transparent);
+  
+  /* Тени для глубины */
+  box-shadow: 
+    0 1px 0 color-mix(in oklab, var(--panel) 50%, transparent),
+    0 4px 24px color-mix(in oklab, var(--text) 3%, transparent);
+  
+  transition: 
+    background var(--transition-base),
+    border-color var(--transition-base),
+    box-shadow var(--transition-base),
+    transform var(--transition-fast);
+  
+  will-change: transform;
+  transform: translateZ(0);
 }
+
+/* Усиление эффекта при скролле (можно добавить через JS класс .scrolled) */
+.header.scrolled {
+  background: color-mix(in oklab, var(--panel) 85%, transparent);
+  box-shadow: 
+    0 1px 0 color-mix(in oklab, var(--panel) 60%, transparent),
+    0 8px 32px color-mix(in oklab, var(--text) 6%, transparent);
+}
+
+/* ============================================
+   LAYOUT
+   ============================================ */
 
 .row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  padding: 12px 0;
+  gap: clamp(1rem, 3vw, 2rem);
+  padding: clamp(1rem, 2vw, 1.5rem) 0;
+  position: relative;
 }
 
-.brand { font-weight: 700; }
-.lang { display: flex; gap: 8px; }
+/* ============================================
+   BRAND
+   ============================================ */
+
+.brand {
+  font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  
+  /* Градиентный текст для акцента */
+  background: linear-gradient(
+    135deg,
+    var(--text) 0%,
+    var(--accent) 100%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% 100%;
+  
+  transition: 
+    background-position var(--dur-4) var(--ease-out),
+    transform var(--transition-base);
+  
+  cursor: default;
+  user-select: none;
+  position: relative;
+}
+
+/* Hover эффект для бренда */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .brand:hover {
+    background-position: 100% 0;
+    transform: translateX(-2px);
+  }
+  
+  /* Акцентная подсветка при ховере */
+  .brand::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(
+      90deg,
+      var(--accent),
+      var(--accent-secondary)
+    );
+    border-radius: 2px;
+    transition: width var(--dur-3) var(--ease-out);
+  }
+  
+  .brand:hover::after {
+    width: 100%;
+  }
+}
+
+/* ============================================
+   LANGUAGE SWITCHER
+   ============================================ */
+
+.lang {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  
+  /* Панель-контейнер для языков */
+  padding: 6px 8px;
+  background: color-mix(in oklab, var(--panel) 60%, transparent);
+  border: 1px solid color-mix(in oklab, var(--border) 50%, transparent);
+  border-radius: 12px;
+  
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  
+  box-shadow: 
+    0 2px 8px color-mix(in oklab, var(--text) 2%, transparent),
+    inset 0 1px 0 color-mix(in oklab, var(--panel) 80%, transparent);
+  
+  transition: 
+    background var(--transition-base),
+    border-color var(--transition-base),
+    transform var(--transition-base);
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .lang:hover {
+    background: color-mix(in oklab, var(--panel) 80%, transparent);
+    border-color: color-mix(in oklab, var(--accent) 30%, transparent);
+    transform: translateY(-1px);
+  }
+}
+
+/* ============================================
+   LANGUAGE LINKS
+   ============================================ */
 
 .lang a {
-  padding: 6px 10px;
-  border-radius: 10px;
-  border: 1px solid var(--border);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  
+  min-width: 44px;
+  height: 36px;
+  padding: 0 clamp(10px, 2vw, 14px);
+  
+  font-size: clamp(0.8125rem, 1.5vw, 0.9375rem);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  
   color: var(--muted);
+  background: transparent;
+  border-radius: 8px;
+  
+  transition: 
+    color var(--transition-fast),
+    background var(--transition-fast),
+    transform var(--transition-fast);
+  
+  /* Микро-анимация при загрузке */
+  animation: langLinkFadeIn var(--dur-3) var(--ease-out) backwards;
 }
-.lang a:hover { color: var(--text); }
+
+.lang a:nth-child(1) { animation-delay: 50ms; }
+.lang a:nth-child(2) { animation-delay: 100ms; }
+
+/* Active / Current language */
+.lang a[aria-current="page"],
+.lang a:active {
+  color: var(--text);
+  background: color-mix(in oklab, var(--accent) 12%, transparent);
+  box-shadow: 
+    0 2px 6px color-mix(in oklab, var(--accent) 8%, transparent),
+    inset 0 1px 0 color-mix(in oklab, var(--panel) 40%, transparent);
+}
+
+/* Hover state */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .lang a:hover {
+    color: var(--text);
+    background: color-mix(in oklab, var(--accent) 8%, transparent);
+    transform: translateY(-1px);
+  }
+  
+  .lang a:active {
+    transform: translateY(0) scale(0.97);
+  }
+}
+
+/* Focus state */
+.lang a:focus-visible {
+  outline: none;
+  box-shadow: 
+    0 0 0 3px color-mix(in oklab, var(--accent) 25%, transparent),
+    0 2px 8px color-mix(in oklab, var(--accent) 15%, transparent);
+  z-index: 1;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 767px) {
+  .row {
+    padding: 0.875rem 0;
+  }
+  
+  .brand {
+    font-size: 1.125rem;
+  }
+  
+  .lang {
+    padding: 4px 6px;
+    gap: 2px;
+  }
+  
+  .lang a {
+    min-width: 40px;
+    height: 32px;
+    padding: 0 10px;
+    font-size: 0.8125rem;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .row {
+    padding: 1.125rem 0;
+  }
+}
+
+/* ============================================
+   DARK MODE ADJUSTMENTS
+   ============================================ */
+
+@media (prefers-color-scheme: dark) {
+  .header {
+    background: color-mix(in oklab, var(--panel) 70%, transparent);
+    border-bottom-color: color-mix(in oklab, var(--border) 30%, transparent);
+    box-shadow: 
+      0 1px 0 color-mix(in oklab, var(--panel) 40%, transparent),
+      0 4px 24px color-mix(in oklab, #000 20%, transparent);
+  }
+  
+  .header.scrolled {
+    background: color-mix(in oklab, var(--panel) 80%, transparent);
+    box-shadow: 
+      0 1px 0 color-mix(in oklab, var(--panel) 50%, transparent),
+      0 8px 32px color-mix(in oklab, #000 30%, transparent);
+  }
+  
+  .lang {
+    background: color-mix(in oklab, var(--panel) 50%, transparent);
+    border-color: color-mix(in oklab, var(--border) 40%, transparent);
+    box-shadow: 
+      0 2px 8px color-mix(in oklab, #000 15%, transparent),
+      inset 0 1px 0 color-mix(in oklab, var(--panel) 60%, transparent);
+  }
+  
+  .lang a[aria-current="page"],
+  .lang a:active {
+    background: color-mix(in oklab, var(--accent) 18%, transparent);
+    box-shadow: 
+      0 2px 6px color-mix(in oklab, var(--accent) 12%, transparent),
+      inset 0 1px 0 color-mix(in oklab, var(--panel) 30%, transparent);
+  }
+}
+
+/* ============================================
+   REDUCED MOTION
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .header,
+  .brand,
+  .lang,
+  .lang a {
+    transition: none !important;
+    animation: none !important;
+  }
+  
+  .brand::after {
+    transition: none !important;
+  }
+}
+
+/* ============================================
+   KEYFRAMES
+   ============================================ */
+
+@keyframes langLinkFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+
+@media print {
+  .header {
+    position: static;
+    background: transparent;
+    backdrop-filter: none;
+    border: none;
+    box-shadow: none;
+  }
+  
+  .lang {
+    display: none;
+  }
+  
+  .brand {
+    background: none;
+    -webkit-text-fill-color: inherit;
+    color: #000;
+  }
+}

@@ -1,20 +1,20 @@
 import Link from "next/link";
 import { LandingHeader } from "@/components/LandingHeader";
-import page from "@/styles/Page.module.css";
+import styles from "./Page.module.css";
 
 export default function Landing() {
   return (
     <>
       <LandingHeader />
       <main className="container">
-        <h1 className={page.h1}>Films / Фільми</h1>
-        <p className={page.muted}>Choose language / Обери мову</p>
+        <h1 className={styles.h1}>Films / Фільми</h1>
+        <p className={styles.muted}>Choose language / Обери мову</p>
 
-        <div className={page.actions}>
-          <Link className={page.button} href="/uk/">
+        <div className={styles.actions}>
+          <Link className={styles.button} href="/uk/">
             Перейти українською
           </Link>
-          <Link className={page.button} href="/en/">
+          <Link className={styles.button} href="/en/">
             Go to English
           </Link>
         </div>
