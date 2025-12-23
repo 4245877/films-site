@@ -1,0 +1,9 @@
+﻿{
+  "name": "@films/cms",
+  "private": true,
+  "scripts": {
+    "dev": "strapi develop",
+    "build": "strapi build",
+    "start": "strapi start"
+  }
+}

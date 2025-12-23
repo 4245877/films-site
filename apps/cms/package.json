@@ -1,9 +1,45 @@
-﻿{
-  "name": "@films/cms",
+{
+  "name": "cms",
+  "version": "0.1.0",
   "private": true,
+  "description": "A Strapi application",
   "scripts": {
-    "dev": "node -e \"console.log('TODO: scaffold Strapi in apps/cms')\"",
-    "build": "node -e \"console.log('TODO')\"",
-    "start": "node -e \"console.log('TODO')\""
+    "build": "strapi build",
+    "console": "strapi console",
+    "deploy": "strapi deploy",
+    "dev": "strapi develop",
+    "develop": "strapi develop",
+    "seed:example": "node ./scripts/seed.js",
+    "start": "strapi start",
+    "strapi": "strapi",
+    "upgrade": "npx @strapi/upgrade latest",
+    "upgrade:dry": "npx @strapi/upgrade latest --dry"
+  },
+  "dependencies": {
+    "@strapi/plugin-cloud": "5.33.0",
+    "@strapi/plugin-users-permissions": "5.33.0",
+    "@strapi/strapi": "5.33.0",
+    "better-sqlite3": "12.4.1",
+    "fs-extra": "^10.0.0",
+    "mime-types": "^2.1.27",
+    "pg": "^8.16.3",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "react-router-dom": "^6.0.0",
+    "styled-components": "^6.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "typescript": "^5"
+  },
+  "engines": {
+    "node": ">=20.0.0 <=24.x.x",
+    "npm": ">=6.0.0"
+  },
+  "strapi": {
+    "uuid": "3f1069bc-42d8-4ccb-993e-8ad436f36434",
+    "installId": "eb4ee9f47a07d4134b1867f7102fedef6dcea44f0033afdb2e864f2f6181837e"
   }
 }

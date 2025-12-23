@@ -1,0 +1,27 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: films
+      POSTGRES_USER: films
+      POSTGRES_PASSWORD: films
+    volumes:
+      - pg:/var/lib/postgresql/data
+
+  cms:
+    build: ../../apps/cms
+    env_file:
+      - ../../apps/cms/.env
+    depends_on:
+      - db
+    ports:
+      - "1337:1337"
+    volumes:
+      - ../../apps/cms:/srv/app
+      - cms_node_modules:/srv/app/node_modules
+      - uploads:/srv/app/public/uploads
+
+volumes:
+  pg:
+  uploads:
+  cms_node_modules:
