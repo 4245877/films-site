@@ -1,5 +1,5 @@
 import { t, isLocale, defaultLocale, type Locale } from "@/lib/i18n";
-import page from "@/styles/Page.module.css";
+import page from "./SearchPage.module.css";
 
 export const dynamicParams = false;
 

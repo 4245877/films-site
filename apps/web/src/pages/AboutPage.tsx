@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { t, isLocale, defaultLocale, type Locale } from "@/lib/i18n";
 // Исправляем импорт: так как файл в той же папке, используем ./
-import page from "./Page.module.css";
+import page from "./AboutPage.module.css";
 
 export const dynamicParams = false;
 
