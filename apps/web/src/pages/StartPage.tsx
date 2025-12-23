@@ -1,8 +1,9 @@
+// apps/web/src/app/StartPage.tsx
 import Link from "next/link";
 import { LandingHeader } from "@/components/LandingHeader";
 import styles from "./StartPage.module.css";
 
-export default function Landing() {
+export default function StartPage() {
   return (
     <>
       <LandingHeader />
@@ -17,6 +18,12 @@ export default function Landing() {
           <Link className={styles.button} href="/en/">
             Go to English
           </Link>
+        </div>
+
+        <div className={styles.hint}>
+          <p className={styles.small}>
+            Після вибору мови ти перейдеш на головну сторінку.
+          </p>
         </div>
       </main>
     </>
