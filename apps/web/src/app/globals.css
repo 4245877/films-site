@@ -6,20 +6,36 @@
 :root {
   color-scheme: light dark;
 
-  /* --- Цвета --- */
-  --bg: #fdf6e3;
-  --panel: #ffffff;
-  --text: #4e342e;
-  --muted: #795548;
-  --border: #d7ccc8;
-  --accent: #d32f2f;
-  --accent-secondary: #7e57c2;
+  /* --- Палитра (фиксированные цвета) --- */
+  --c-brand-900: #4A0E10; /* самый тёмный бордовый */
+  --c-brand-800: #8B1C24; /* глубокий красный */
+  --c-brand-600: #C33D2E; /* основной акцент */
+  --c-brand-300: #D67E7A; /* мягкий розово-красный */
+  --c-gold-500: #DAA520;  /* золото */
+  --c-ink-900: #2A2A2A;   /* почти чёрный */
+  --c-ink-800: #353535;   /* тёмно-серый */
+  --c-paper-50: #F2E9E1;  /* тёплый фон */
+  --c-white: #FFFFFF;     /* белый */
 
-  /* UI статусы */
-  --success: #2e7d32;
-  --warning: #f57c00;
-  --error: #c62828;
-  --info: #0277bd;
+  /* --- Семантика --- */
+  --bg: var(--c-paper-50);
+  --panel: var(--c-white);
+  --text: var(--c-ink-900);
+  --muted: var(--c-ink-800);
+
+  --border: color-mix(in oklab, var(--text) 14%, var(--bg));
+  --border-strong: color-mix(in oklab, var(--text) 22%, var(--bg));
+
+  --accent: var(--c-brand-600);
+  --accent-strong: var(--c-brand-800);
+  --accent-soft: var(--c-brand-300);
+  --accent-secondary: var(--c-gold-500);
+
+  /* UI статусы (в рамках палитры) */
+  --success: var(--c-gold-500);
+  --warning: var(--c-brand-300);
+  --error: var(--c-brand-600);
+  --info: var(--c-brand-800);
 
   /* --- Геометрия --- */
   --container: 1200px;
@@ -27,10 +43,16 @@
   --radius-2: 16px;
   --radius-3: 24px;
 
-  /* --- Тени --- */
-  --shadow-1: 0 1px 3px rgba(0, 0, 0, 0.06), 0 8px 24px rgba(0, 0, 0, 0.08);
-  --shadow-2: 0 4px 12px rgba(0, 0, 0, 0.08), 0 20px 48px rgba(0, 0, 0, 0.12);
-  --shadow-3: 0 8px 32px rgba(0, 0, 0, 0.12), 0 32px 64px rgba(0, 0, 0, 0.16);
+  /* --- Тени (тёплые, нейтральные) --- */
+  --shadow-1:
+    0 1px 3px rgba(0, 0, 0, 0.06),
+    0 8px 24px rgba(0, 0, 0, 0.08);
+  --shadow-2:
+    0 4px 12px rgba(0, 0, 0, 0.08),
+    0 20px 48px rgba(0, 0, 0, 0.12);
+  --shadow-3:
+    0 8px 32px rgba(0, 0, 0, 0.12),
+    0 32px 64px rgba(0, 0, 0, 0.16);
 
   /* --- Анимация и время --- */
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
@@ -42,13 +64,12 @@
   --dur-3: 400ms;
   --dur-4: 600ms;
 
-  /* Алиасы для переходов */
   --transition-fast: var(--dur-1) var(--ease-out);
   --transition-base: var(--dur-2) var(--ease-out);
   --transition-slow: var(--dur-3) var(--ease-out);
 
   /* --- Фокус --- */
-  --focus-ring: 0 0 0 3px color-mix(in oklab, var(--accent) 25%, transparent);
+  --focus-ring: 0 0 0 3px color-mix(in oklab, var(--accent) 28%, transparent);
 
   /* --- Типографика --- */
   --font-body: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
@@ -67,34 +88,39 @@
 /* Переопределения для тёмной темы */
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #1a1816;
-    --panel: #262320;
-    --text: #ece8e5;
-    --muted: #a89f99;
-    --border: #3a3633;
-    --accent: #ff5252;
-    --accent-secondary: #9575cd;
+    --bg: var(--c-ink-900);
+    --panel: var(--c-ink-800);
+    --text: var(--c-paper-50);
+    --muted: color-mix(in oklab, var(--c-paper-50) 72%, var(--c-ink-900));
+
+    --border: color-mix(in oklab, var(--c-paper-50) 18%, var(--c-ink-900));
+    --border-strong: color-mix(in oklab, var(--c-paper-50) 28%, var(--c-ink-900));
+
+    --accent: var(--c-brand-600);
+    --accent-strong: var(--c-brand-300);
+    --accent-soft: color-mix(in oklab, var(--c-brand-300) 70%, var(--c-ink-900));
+    --accent-secondary: var(--c-gold-500);
 
     /* Более глубокие тени */
-    --shadow-1: 
-      0 1px 3px rgba(0, 0, 0, 0.5),
-      0 8px 24px rgba(0, 0, 0, 0.6),
-      inset 0 0 0 1px rgba(255, 255, 255, 0.03);
-    --shadow-2: 
-      0 4px 12px rgba(0, 0, 0, 0.6),
-      0 20px 48px rgba(0, 0, 0, 0.7),
-      inset 0 0 0 1px rgba(255, 255, 255, 0.05);
-    --shadow-3: 
-      0 8px 32px rgba(0, 0, 0, 0.7),
-      0 32px 64px rgba(0, 0, 0, 0.8),
-      inset 0 0 0 1px rgba(255, 255, 255, 0.07);
+    --shadow-1:
+      0 1px 3px rgba(0, 0, 0, 0.55),
+      0 8px 24px rgba(0, 0, 0, 0.65),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+    --shadow-2:
+      0 4px 12px rgba(0, 0, 0, 0.65),
+      0 20px 48px rgba(0, 0, 0, 0.75),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+    --shadow-3:
+      0 8px 32px rgba(0, 0, 0, 0.75),
+      0 32px 64px rgba(0, 0, 0, 0.85),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.08);
 
-    --focus-ring: 0 0 0 3px color-mix(in oklab, var(--accent) 35%, transparent);
+    --focus-ring: 0 0 0 3px color-mix(in oklab, var(--accent) 38%, transparent);
 
-    --success: #4caf50;
-    --warning: #ffa726;
-    --error: #ef5350;
-    --info: #29b6f6;
+    --success: var(--c-gold-500);
+    --warning: var(--c-brand-300);
+    --error: var(--c-brand-600);
+    --info: var(--c-gold-500);
   }
 }
 
@@ -107,21 +133,24 @@
 
 @media (prefers-contrast: more) {
   :root {
-    --text: #000000;
-    --bg: #ffffff;
-    --border: #000000;
-    --accent: #c00000;
-    --success: #0066cc;
-    --warning: #ff6600;
-    --error: #cc0000;
+    --text: var(--c-ink-900);
+    --bg: var(--c-white);
+    --panel: var(--c-white);
+    --border: var(--c-ink-900);
+    --accent: var(--c-brand-800);
+    --success: var(--c-gold-500);
+    --warning: var(--c-brand-300);
+    --error: var(--c-brand-600);
+    --info: var(--c-ink-800);
   }
 
   @media (prefers-color-scheme: dark) {
     :root {
-      --text: #ffffff;
-      --bg: #000000;
-      --border: #ffffff;
-      --accent: #ff4444;
+      --text: var(--c-white);
+      --bg: var(--c-ink-900);
+      --panel: var(--c-ink-900);
+      --border: var(--c-white);
+      --accent: var(--c-brand-300);
     }
   }
 }
@@ -143,10 +172,6 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 80px;
-}
-
-/* Firefox scrollbar (применяем к html, а не к *, для производительности) */
-html {
   scrollbar-width: thin;
   scrollbar-color: var(--border) var(--bg);
 }
@@ -168,15 +193,14 @@ body {
       transparent 60%
     ),
     radial-gradient(
-      ellipse 800px 600px at 50% 100%,
-      color-mix(in oklab, var(--accent-secondary) 8%, transparent),
-      transparent 50%
+      ellipse 900px 650px at 50% 100%,
+      color-mix(in oklab, var(--accent-strong) 10%, transparent),
+      transparent 55%
     );
   background-repeat: no-repeat;
   background-size: 100% 100%;
   overflow-x: hidden;
 
-  /* Типографика base */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
@@ -185,7 +209,7 @@ body {
   -webkit-text-size-adjust: 100%;
   font-variant-ligatures: common-ligatures;
 
-  transition: 
+  transition:
     background-color var(--dur-3) var(--ease-out),
     color var(--dur-3) var(--ease-out);
 
@@ -195,8 +219,15 @@ body {
 /* Анимация появления страницы */
 @media (prefers-reduced-motion: no-preference) {
   body {
-    background-attachment: fixed; /* Только для десктопа/не-мобайл по дефолту */
+    background-attachment: fixed;
     animation: bodyFadeIn 0.6s var(--ease-out);
+  }
+}
+
+/* Mobile: не фиксируем фон (меньше лагов на iOS/Android) */
+@media (max-width: 767px) {
+  body {
+    background-attachment: scroll;
   }
 }
 
@@ -238,12 +269,11 @@ code {
   font-family: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, monospace;
   font-size: 0.9em;
   padding: 2px 6px;
-  background: color-mix(in oklab, var(--accent) 8%, transparent);
-  border-radius: 4px;
+  background: color-mix(in oklab, var(--accent) 10%, transparent);
+  border-radius: 6px;
   color: var(--accent);
 }
 
-/* Lists */
 ul, ol { padding-left: 1.5em; }
 li { line-height: 1.7; margin-bottom: 0.5em; }
 
@@ -259,16 +289,14 @@ hr {
   background: color-mix(in oklab, var(--accent) 28%, transparent);
   color: var(--text);
 }
-
 ::-moz-selection {
   background: color-mix(in oklab, var(--accent) 28%, transparent);
   color: var(--text);
 }
 
-/* Тёмная тема для selection */
 @media (prefers-color-scheme: dark) {
-  ::selection { background: color-mix(in oklab, var(--accent) 35%, transparent); }
-  ::-moz-selection { background: color-mix(in oklab, var(--accent) 35%, transparent); }
+  ::selection { background: color-mix(in oklab, var(--accent) 36%, transparent); }
+  ::-moz-selection { background: color-mix(in oklab, var(--accent) 36%, transparent); }
 }
 
 /* ============================================
@@ -289,15 +317,22 @@ hr {
 a {
   color: var(--accent);
   text-decoration: none;
-  transition: 
+  text-underline-offset: 0.18em;
+  transition:
     opacity var(--dur-2) var(--ease-out),
     color var(--dur-2) var(--ease-out),
-    transform var(--dur-2) var(--ease-out);
+    transform var(--dur-2) var(--ease-out),
+    text-decoration-color var(--dur-2) var(--ease-out);
   will-change: transform, opacity;
 }
 
-a:hover { opacity: 0.9; }
-a:active { opacity: 0.7; }
+a:hover {
+  opacity: 0.92;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in oklab, var(--accent) 60%, transparent);
+}
+
+a:active { opacity: 0.75; }
 
 /* Buttons & Form Controls */
 button, input, select, textarea {
@@ -327,7 +362,12 @@ button {
   cursor: pointer;
   position: relative;
   overflow: hidden;
-  transition: all var(--dur-2) var(--ease-out);
+  transition:
+    transform var(--dur-2) var(--ease-out),
+    opacity var(--dur-2) var(--ease-out),
+    box-shadow var(--dur-2) var(--ease-out),
+    background-color var(--dur-2) var(--ease-out),
+    color var(--dur-2) var(--ease-out);
 }
 
 /* Рипл-эффект для кнопок при ховере */
@@ -344,19 +384,18 @@ button {
     width: 0;
     height: 0;
     border-radius: 50%;
-    background: color-mix(in oklab, currentColor 15%, transparent);
+    background: color-mix(in oklab, currentColor 16%, transparent);
     transform: translate(-50%, -50%);
     transition: width var(--dur-3) var(--ease-out), height var(--dur-3) var(--ease-out);
     pointer-events: none;
   }
 
   button:hover::after {
-    width: 300px;
-    height: 300px;
+    width: 320px;
+    height: 320px;
   }
 }
 
-/* Active state micro-interaction */
 @media (prefers-reduced-motion: no-preference) {
   button:active { transform: scale(0.97); }
 }
@@ -367,7 +406,7 @@ input:disabled,
 select:disabled,
 textarea:disabled {
   cursor: not-allowed;
-  opacity: 0.5;
+  opacity: 0.55;
   filter: grayscale(0.3);
 }
 
@@ -375,7 +414,7 @@ textarea:disabled {
 :where(a, button, input, select, textarea):focus-visible {
   outline: none;
   box-shadow: var(--focus-ring);
-  border-radius: 8px;
+  border-radius: var(--radius-1);
   z-index: 1;
 }
 
@@ -386,9 +425,9 @@ textarea:disabled {
 }
 
 /* Placeholder */
-::placeholder { color: var(--muted); opacity: 0.65; }
-:-ms-input-placeholder { color: var(--muted); opacity: 0.65; }
-::-ms-input-placeholder { color: var(--muted); opacity: 0.65; }
+::placeholder { color: var(--muted); opacity: 0.7; }
+:-ms-input-placeholder { color: var(--muted); opacity: 0.7; }
+::-ms-input-placeholder { color: var(--muted); opacity: 0.7; }
 
 /* ============================================
    6. MEDIA & IMAGES
@@ -403,7 +442,7 @@ img, video, iframe {
   border-radius: var(--radius-1);
 }
 
-/* Lazy loading */
+/* Lazy loading (мягко, без “липкого нуля”) */
 img[loading="lazy"] {
   opacity: 0;
   animation: fadeIn var(--dur-3) var(--ease-out) forwards;
@@ -422,11 +461,11 @@ img[loading="lazy"] {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--border); /* Fallback */
+  background: var(--border);
   background: linear-gradient(
     180deg,
     var(--border),
-    color-mix(in oklab, var(--border) 80%, var(--accent))
+    color-mix(in oklab, var(--border) 78%, var(--accent))
   );
   border-radius: 8px;
   border: 3px solid var(--bg);
@@ -434,7 +473,7 @@ img[loading="lazy"] {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--muted);
+  background: color-mix(in oklab, var(--muted) 70%, var(--accent-soft));
 }
 
 ::-webkit-scrollbar-thumb:active {
@@ -458,21 +497,21 @@ img[loading="lazy"] {
 
 /* Shadows */
 .shadow-soft {
-  box-shadow: 
-    0 2px 8px color-mix(in oklab, var(--text) 4%, transparent),
-    0 8px 24px color-mix(in oklab, var(--text) 6%, transparent);
+  box-shadow:
+    0 2px 8px color-mix(in oklab, var(--c-brand-900) 10%, transparent),
+    0 10px 26px color-mix(in oklab, var(--text) 8%, transparent);
 }
 
 .shadow-medium {
-  box-shadow: 
-    0 4px 12px color-mix(in oklab, var(--text) 6%, transparent),
-    0 16px 32px color-mix(in oklab, var(--text) 8%, transparent);
+  box-shadow:
+    0 4px 12px color-mix(in oklab, var(--c-brand-900) 14%, transparent),
+    0 18px 36px color-mix(in oklab, var(--text) 10%, transparent);
 }
 
 .shadow-strong {
-  box-shadow: 
-    0 8px 24px color-mix(in oklab, var(--text) 8%, transparent),
-    0 24px 48px color-mix(in oklab, var(--text) 12%, transparent);
+  box-shadow:
+    0 10px 28px color-mix(in oklab, var(--c-brand-900) 18%, transparent),
+    0 28px 56px color-mix(in oklab, var(--text) 14%, transparent);
 }
 
 /* Animation Utilities */
@@ -496,7 +535,7 @@ img[loading="lazy"] {
 
 @keyframes focusRingPulse {
   0%, 100% { box-shadow: var(--focus-ring); }
-  50% { box-shadow: 0 0 0 6px color-mix(in oklab, var(--accent) 20%, transparent); }
+  50% { box-shadow: 0 0 0 6px color-mix(in oklab, var(--accent) 22%, transparent); }
 }
 
 @keyframes slideUp {
@@ -512,11 +551,9 @@ img[loading="lazy"] {
 /* ============================================
    10. MEDIA QUERIES (System)
    ============================================ */
-
-/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  
+
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
@@ -528,16 +565,11 @@ img[loading="lazy"] {
 
 /* Mobile optimizations */
 @media (max-width: 767px) {
-  /* Увеличиваем размер тач-целей только для интерактивных элементов */
   button, input, select {
     min-height: 44px;
     min-width: 44px;
   }
-  
-  /* Примечание: Убрали 'a' из принудительной ширины 44px, 
-     чтобы не ломать строчные ссылки в тексте. */
 
-  /* Убираем тяжелые анимации на мобильных */
   @media (prefers-reduced-motion: no-preference) {
     body { animation: none; }
   }
@@ -545,24 +577,29 @@ img[loading="lazy"] {
 
 /* Print styles */
 @media print {
-  body { background: white; color: black; }
-  
+  body {
+    background: var(--c-white) !important;
+    color: var(--c-ink-900) !important;
+  }
+
   *, *::before, *::after {
     box-shadow: none !important;
     text-shadow: none !important;
     background: transparent !important;
   }
 
-  a { text-decoration: underline; color: black; }
-  
+  a {
+    text-decoration: underline;
+    color: var(--c-ink-900) !important;
+  }
+
   a[href^="http"]::after {
     content: " (" attr(href) ")";
     font-size: 0.875em;
-    color: #666;
+    color: var(--c-ink-800);
   }
 
   img { max-width: 100%; page-break-inside: avoid; }
-  
-  /* Скрываем декоративные элементы при печати */
-  button, video, iframe, .sr-only { display: none; }
+
+  button, video, iframe, .sr-only { display: none !important; }
 }
