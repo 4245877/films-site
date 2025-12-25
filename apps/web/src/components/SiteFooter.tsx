@@ -20,24 +20,24 @@ export function SiteFooter({ locale }: Props) {
       ? {
           nav: "Навігація",
           discover: "Досліджуй",
-          project: "Про проєкт"
+          project: "Про проєкт",
         }
       : {
           nav: "Navigation",
           discover: "Discover",
-          project: "About"
+          project: "About",
         },
     bottom: isUk
       ? {
           built: "Minimal demo build for GitHub Pages",
           top: "Нагору",
-          feedback: "Зворотний звʼязок"
+          feedback: "Зворотний звʼязок",
         }
       : {
           built: "Minimal demo build for GitHub Pages",
           top: "Back to top",
-          feedback: "Feedback"
-        }
+          feedback: "Feedback",
+        },
   };
 
   const href = (path: string) => withBasePath(`/${safeLocale}${path}`);
@@ -45,22 +45,21 @@ export function SiteFooter({ locale }: Props) {
   const navLinks = [
     { label: isUk ? "Головна" : "Home", href: href("") },
     { label: isUk ? "Новини" : "News", href: href("/news") },
-    // TODO: коли додаси сторінки — просто заміни "#" на реальні маршрути
     { label: isUk ? "Каталог" : "Catalog", href: "#", disabled: true },
-    { label: isUk ? "Підбірки" : "Collections", href: "#", disabled: true }
+    { label: isUk ? "Підбірки" : "Collections", href: "#", disabled: true },
   ];
 
   const discoverLinks = [
     { label: isUk ? "Топ дня" : "Trending", href: "#", disabled: true },
     { label: isUk ? "Новинки" : "New releases", href: "#", disabled: true },
     { label: isUk ? "Жанри" : "Genres", href: "#", disabled: true },
-    { label: isUk ? "FAQ" : "FAQ", href: "#", disabled: true }
+    { label: isUk ? "FAQ" : "FAQ", href: "#", disabled: true },
   ];
 
   const projectLinks = [
     { label: isUk ? "Про сайт" : "About the site", href: "#", disabled: true },
     { label: isUk ? "Політика конфіденційності" : "Privacy", href: "#", disabled: true },
-    { label: isUk ? "Умови використання" : "Terms", href: "#", disabled: true }
+    { label: isUk ? "Умови використання" : "Terms", href: "#", disabled: true },
   ];
 
   return (
@@ -70,7 +69,15 @@ export function SiteFooter({ locale }: Props) {
           <div className={styles.brand}>
             <Link href={href("")} className={styles.logo} aria-label="Films home">
               <span className={styles.logoMark} aria-hidden="true">
-                F
+                <img
+                  src={withBasePath("/logo.svg")}
+                  alt=""
+                  aria-hidden="true"
+                  className={styles.logoImg}
+                  width={28}
+                  height={28}
+                  decoding="async"
+                />
               </span>
               <span className={styles.logoText}>Films</span>
             </Link>
@@ -90,12 +97,7 @@ export function SiteFooter({ locale }: Props) {
               <span className={styles.dot} aria-hidden="true">
                 •
               </span>
-              <a
-                className={styles.mutedLink}
-                href="https://github.com/"
-                target="_blank"
-                rel="noreferrer"
-              >
+              <a className={styles.mutedLink} href="https://github.com/" target="_blank" rel="noreferrer">
                 GitHub
               </a>
             </div>
@@ -166,8 +168,8 @@ export function SiteFooter({ locale }: Props) {
 
         <div className={styles.bottom} aria-label="Footer bottom">
           <div className={styles.copy}>
-            © {year} <span className={styles.sep}>•</span> Films{" "}
-            <span className={styles.sep}>•</span> {txt.bottom.built}
+            © {year} <span className={styles.sep}>•</span> Films <span className={styles.sep}>•</span>{" "}
+            {txt.bottom.built}
           </div>
 
           <a className={styles.toTop} href="#top">

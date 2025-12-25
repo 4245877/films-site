@@ -14,11 +14,14 @@ export function SiteHeader({ locale }: Props) {
   const searchLabel = locale === "uk" ? "Шукати" : "Search";
   const skipLabel = locale === "uk" ? "Перейти до вмісту" : "Skip to content";
 
+  // Важно для GitHub Pages/basePath: все внутренние ссылки через withBasePath
+  const href = (path: string) => withBasePath(`/${locale}${path}`);
+
   const navItems: Array<{ href: string; label: string }> = [
-    { href: `/${locale}/films/`, label: t(locale, "films") },
-    { href: `/${locale}/news/`, label: t(locale, "news") },
-    { href: `/${locale}/about/`, label: t(locale, "about") },
-    { href: `/${locale}/contacts/`, label: t(locale, "contacts") }
+    { href: href("/films"), label: t(locale, "films") },
+    { href: href("/news"), label: t(locale, "news") },
+    { href: href("/about"), label: t(locale, "about") },
+    { href: href("/contacts"), label: t(locale, "contacts") },
   ];
 
   return (
@@ -29,16 +32,19 @@ export function SiteHeader({ locale }: Props) {
 
       <div className="container">
         <div className={styles.row}>
-          <Link
-            href={`/${locale}/`}
-            className={styles.brandLink}
-            aria-label={t(locale, "home")}
-          >
-            <img
-              className={styles.logo}
-              src={withBasePath("/brand/logo.svg")}
-              alt={t(locale, "siteTitle")}
-            />
+          <Link href={href("")} className={styles.brandLink} aria-label={t(locale, "home")}>
+            <span className={styles.logoMark} aria-hidden="true">
+              <img
+                className={styles.logoImg}
+                src={withBasePath("/logo.svg")}
+                alt=""
+                aria-hidden="true"
+                width={28}
+                height={28}
+                decoding="async"
+              />
+            </span>
+
             <div className={styles.brand}>
               <div className={styles.title}>{t(locale, "siteTitle")}</div>
               <div className={styles.sub}>{t(locale, "projectSubtitle")}</div>
@@ -56,12 +62,7 @@ export function SiteHeader({ locale }: Props) {
 
           <div className={styles.right}>
             {/* Search (desktop) */}
-            <form
-              className={styles.search}
-              action={`/${locale}/search/`}
-              method="GET"
-              role="search"
-            >
+            <form className={styles.search} action={href("/search")} method="GET" role="search">
               <input
                 className={styles.searchInput}
                 type="search"
@@ -77,14 +78,14 @@ export function SiteHeader({ locale }: Props) {
             <div className={styles.lang} aria-label="Language">
               <Link
                 className={locale === "uk" ? styles.activeLang : styles.langLink}
-                href="/uk/"
+                href={withBasePath("/uk")}
                 aria-current={locale === "uk" ? "page" : undefined}
               >
                 UK
               </Link>
               <Link
                 className={locale === "en" ? styles.activeLang : styles.langLink}
-                href="/en/"
+                href={withBasePath("/en")}
                 aria-current={locale === "en" ? "page" : undefined}
               >
                 EN
@@ -99,7 +100,7 @@ export function SiteHeader({ locale }: Props) {
 
               <div className={styles.menuPanel} role="dialog" aria-label={menuLabel}>
                 <nav className={styles.menuLinks} aria-label="Mobile">
-                  <Link href={`/${locale}/`}>{t(locale, "home")}</Link>
+                  <Link href={href("")}>{t(locale, "home")}</Link>
                   {navItems.map((it) => (
                     <Link key={it.href} href={it.href}>
                       {it.label}
@@ -107,12 +108,7 @@ export function SiteHeader({ locale }: Props) {
                   ))}
                 </nav>
 
-                <form
-                  className={styles.menuSearch}
-                  action={`/${locale}/search/`}
-                  method="GET"
-                  role="search"
-                >
+                <form className={styles.menuSearch} action={href("/search")} method="GET" role="search">
                   <input
                     className={styles.menuSearchInput}
                     type="search"
