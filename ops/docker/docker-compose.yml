@@ -9,19 +9,47 @@ services:
       - pg:/var/lib/postgresql/data
 
   cms:
-    build: ../../apps/cms
+    image: node:20-bullseye
+    working_dir: /srv/app
     env_file:
       - ../../apps/cms/.env
     depends_on:
       - db
     ports:
       - "1337:1337"
+    environment:
+      HOST: 0.0.0.0
+      PORT: 1337
     volumes:
       - ../../apps/cms:/srv/app
       - cms_node_modules:/srv/app/node_modules
       - uploads:/srv/app/public/uploads
+    command: sh -lc "npm install && npm run develop"
+
+  web:
+    image: node:20-bullseye
+    working_dir: /app
+    depends_on:
+      - cms
+    ports:
+      - "3000:3000"
+    volumes:
+      - ../../apps/web:/app
+      - web_node_modules:/app/node_modules
+    command: sh -lc "npm install && npm run dev"
+
+  nginx:
+    image: nginx:alpine
+    depends_on:
+      - web
+      - cms
+    ports:
+      - "8080:80"
+    volumes:
+      - ../nginx/nginx.conf:/etc/nginx/nginx.conf:ro
 
 volumes:
   pg:
   uploads:
   cms_node_modules:
+  web_node_modules:

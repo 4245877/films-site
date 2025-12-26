@@ -2,11 +2,13 @@ import Link from "next/link";
 import { t, isLocale, defaultLocale, type Locale } from "@/lib/i18n";
 import page from "@/styles/Page.module.css";
 import styles from "./NewsIndexPage.module.css";
-
+// Импортируем созданный хелпер
+import { apiGet } from "@/lib/api";
 
 export const dynamicParams = false;
 
-type NewsType = "анонси" | "релізи" | "трейлери" | "добірки" | "індустрія" | "події";
+// Типы для UI (как в твоем дизайне)
+type NewsType = "анонси" | "релізи" | "трейлери" | "добірки" | "індустрія" | "події" | string;
 
 type NewsItem = {
   slug: string;
@@ -18,11 +20,86 @@ type NewsItem = {
   minutes?: number;
 };
 
+// Типы ответа API (пример для Strapi v4)
+interface StrapiArticle {
+  id: number;
+  attributes: {
+    slug: string;
+    title: string;
+    lead?: string;     // или description
+    publishedAt: string;
+    content?: string;  // чтобы посчитать время чтения
+    category?: {
+      data: {
+        attributes: {
+          name: string;
+        }
+      } | null;
+    };
+    tags?: {
+      data: Array<{
+        attributes: {
+          name: string;
+        }
+      }>
+    };
+    cover?: {
+      data: any;
+    };
+  };
+}
+
+interface ApiResponse {
+  data: StrapiArticle[];
+  meta: any;
+}
+
 function formatUA(dateISO: string) {
+  if (!dateISO) return "";
   const [y, m, d] = dateISO.split("-").map(Number);
+  // Защита от NaN, если дата пришла битая
+  if (!y || !m || !d) return dateISO;
   const dt = new Date(Date.UTC(y, m - 1, d));
   return dt.toLocaleDateString("uk-UA", { year: "numeric", month: "long", day: "numeric" });
 }
+
+// --- MOCK DATA (Fallback) ---
+// Оставляем на случай, если бэкенд пустой, чтобы верстка не "упала"
+const MOCK_ITEMS: NewsItem[] = [
+  {
+    slug: "weekend-picks-quiet-night",
+    type: "добірки",
+    title: "На тихий вечір: 12 фільмів, які не втомлюють, а тримають",
+    lead: "Драма без істерики, трилер без шуму, фантастика без зайвих пояснень — зручна добірка під настрій.",
+    date: "2025-12-10",
+    tags: ["вечір", "драма", "психологічне"]
+  },
+  {
+    slug: "trailer-drop-winter-anime",
+    type: "трейлери",
+    title: "Зимовий сезон аніме: трейлери, які варто додати у «Список»",
+    lead: "Коротко, по суті: що виходить, коли стартує, і чим це може зачепити саме тебе.",
+    date: "2025-12-08",
+    tags: ["аніме", "сезон", "трейлери"]
+  },
+  {
+    slug: "release-calendar-update",
+    type: "релізи",
+    title: "Оновили календар релізів: тепер видно прем’єри, повернення та спецпокази",
+    lead: "Додали фільтри за країною, форматом і типом (фільм/серіал/аніме). Пошук працює швидше.",
+    date: "2025-12-06",
+    tags: ["календар", "оновлення", "релізи"]
+  },
+  {
+    slug: "industry-how-metadata-works",
+    type: "індустрія",
+    title: "Як ми тримаємо порядок у каталозі з 1 000 000+ тайтлів",
+    lead: "Синоніми назв, альтернативні транслітерації, роки й жанри — пояснюємо просто, як це допомагає пошуку.",
+    date: "2025-12-02",
+    tags: ["каталог", "метадані", "пошук"],
+    minutes: 4
+  }
+];
 
 export default async function NewsPage({
   params
@@ -33,67 +110,50 @@ export default async function NewsPage({
   const safeLocale: Locale = isLocale(locale) ? locale : defaultLocale;
 
   const href = (path: string) => `/${safeLocale}${path}`;
-
-  // Демо-стрічка (потім заміниш на дані з БД/CRM)
-  const items: NewsItem[] = [
-    {
-      slug: "weekend-picks-quiet-night",
-      type: "добірки",
-      title: "На тихий вечір: 12 фільмів, які не втомлюють, а тримають",
-      lead:
-        "Драма без істерики, трилер без шуму, фантастика без зайвих пояснень — зручна добірка під настрій.",
-      date: "2025-12-10",
-      tags: ["вечір", "драма", "психологічне"]
-    },
-    {
-      slug: "trailer-drop-winter-anime",
-      type: "трейлери",
-      title: "Зимовий сезон аніме: трейлери, які варто додати у «Список»",
-      lead:
-        "Коротко, по суті: що виходить, коли стартує, і чим це може зачепити саме тебе.",
-      date: "2025-12-08",
-      tags: ["аніме", "сезон", "трейлери"]
-    },
-    {
-      slug: "release-calendar-update",
-      type: "релізи",
-      title: "Оновили календар релізів: тепер видно прем’єри, повернення та спецпокази",
-      lead:
-        "Додали фільтри за країною, форматом і типом (фільм/серіал/аніме). Пошук працює швидше.",
-      date: "2025-12-06",
-      tags: ["календар", "оновлення", "релізи"]
-    },
-    {
-      slug: "announcements-top-lists",
-      type: "анонси",
-      title: "Скоро: персональні топи й розумні рекомендації без спойлерів",
-      lead:
-        "Ти позначаєш «подобається/не моє» — ми підлаштовуємо стрічку. Жодних зайвих підписок, тільки зручність.",
-      date: "2025-12-04",
-      tags: ["анонси", "рекомендації", "зручність"]
-    },
-    {
-      slug: "industry-how-metadata-works",
-      type: "індустрія",
-      title: "Як ми тримаємо порядок у каталозі з 1 000 000+ тайтлів",
-      lead:
-        "Синоніми назв, альтернативні транслітерації, роки й жанри — пояснюємо просто, як це допомагає пошуку.",
-      date: "2025-12-02",
-      tags: ["каталог", "метадані", "пошук"],
-      minutes: 4
-    },
-    {
-      slug: "events-community-watch",
-      type: "події",
-      title: "Подія спільноти: онлайн-перегляд + обговорення без токсичності",
-      lead:
-        "Теплий формат: дивимось разом, а потім коротко ділимось враженнями. Без нав’язування смаків.",
-      date: "2025-11-30",
-      tags: ["події", "спільнота", "обговорення"]
-    }
-  ];
-
   const typeOrder: NewsType[] = ["анонси", "релізи", "трейлери", "добірки", "індустрія", "події"];
+
+  // 1. Запрос к API
+  let items: NewsItem[] = [];
+
+  try {
+    const response = await apiGet<ApiResponse>(
+      "/api/articles?sort=publishedAt:desc&populate=cover,author,category,tags"
+    );
+
+    // 2. Маппинг данных (Backend -> Frontend UI)
+    if (response?.data && response.data.length > 0) {
+      items = response.data.map((item) => {
+        const attr = item.attributes;
+        
+        // Примерный расчет времени чтения (200 слов в минуту)
+        const words = attr.content ? attr.content.split(/\s+/).length : 0;
+        const minutes = words > 0 ? Math.ceil(words / 200) : undefined;
+
+        return {
+          slug: attr.slug,
+          // Если категории нет, ставим "новини"
+          type: attr.category?.data?.attributes?.name.toLowerCase() || "новини",
+          title: attr.title,
+          lead: attr.lead || "", // Убедись, что в Strapi есть поле lead или description
+          date: attr.publishedAt ? attr.publishedAt.split("T")[0] : "",
+          tags: attr.tags?.data?.map(t => t.attributes.name) || [],
+          minutes: minutes,
+        };
+      });
+    }
+  } catch (error) {
+    console.error("NewsPage API Error:", error);
+    // Игнорируем ошибку, чтобы показать Mock данные (или пустую страницу)
+  }
+
+  // 3. Fallback: Если API вернул пустоту (или лежит), показываем демо-данные
+  if (items.length === 0) {
+    items = MOCK_ITEMS;
+  }
+
+  // Для безопасности, если и API, и моки пусты
+  const featured = items[0];
+  const feed = items.slice(1);
 
   return (
     <>
@@ -143,30 +203,32 @@ export default async function NewsPage({
       </header>
 
       {/* FEATURED */}
-      <section className={`card ${page.section}`}>
-        <div className={styles.sectionHeader}>
-          <h2 className={page.h2}>Головне сьогодні</h2>
-          <p className={page.muted}>
-            Найцінніше — зверху. Решта нижче, у зручній стрічці.
-          </p>
-        </div>
+      {featured && (
+        <section className={`card ${page.section}`}>
+          <div className={styles.sectionHeader}>
+            <h2 className={page.h2}>Головне сьогодні</h2>
+            <p className={page.muted}>
+              Найцінніше — зверху. Решта нижче, у зручній стрічці.
+            </p>
+          </div>
 
-        <Link className={styles.featured} href={href(`/news/${items[0].slug}`)}>
-          <div className={styles.featuredTop}>
-            <span className={styles.badgeType}>{items[0].type}</span>
-            <span className={styles.date}>{formatUA(items[0].date)}</span>
-          </div>
-          <div className={styles.featuredTitle}>{items[0].title}</div>
-          <div className={styles.featuredLead}>{items[0].lead}</div>
-          <div className={styles.tags}>
-            {items[0].tags.map((tag) => (
-              <span key={tag} className={styles.tag}>
-                {tag}
-              </span>
-            ))}
-          </div>
-        </Link>
-      </section>
+          <Link className={styles.featured} href={href(`/news/${featured.slug}`)}>
+            <div className={styles.featuredTop}>
+              <span className={styles.badgeType}>{featured.type}</span>
+              <span className={styles.date}>{formatUA(featured.date)}</span>
+            </div>
+            <div className={styles.featuredTitle}>{featured.title}</div>
+            <div className={styles.featuredLead}>{featured.lead}</div>
+            <div className={styles.tags}>
+              {featured.tags.map((tag) => (
+                <span key={tag} className={styles.tag}>
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </Link>
+        </section>
+      )}
 
       {/* FEED */}
       <section className={`card ${page.section}`}>
@@ -178,43 +240,49 @@ export default async function NewsPage({
         </div>
 
         <div className={styles.feed}>
-          {items.slice(1).map((n) => (
-            <article key={n.slug} className={styles.item}>
-              <div className={styles.itemTop}>
-                <Link className={styles.typeLink} href={href(`/news?type=${encodeURIComponent(n.type)}`)}>
-                  {n.type}
-                </Link>
-                <span className={styles.dot}>•</span>
-                <time className={styles.date} dateTime={n.date}>
-                  {formatUA(n.date)}
-                </time>
-                {typeof n.minutes === "number" ? (
-                  <>
-                    <span className={styles.dot}>•</span>
-                    <span className={styles.read}>{n.minutes} хв читання</span>
-                  </>
-                ) : null}
-              </div>
-
-              <Link className={styles.itemTitle} href={href(`/news/${n.slug}`)}>
-                {n.title}
-              </Link>
-
-              <p className={styles.itemLead}>{n.lead}</p>
-
-              <div className={styles.tags}>
-                {n.tags.map((tag) => (
-                  <Link
-                    key={tag}
-                    className={styles.tagLink}
-                    href={href(`/news?tag=${encodeURIComponent(tag)}`)}
-                  >
-                    #{tag}
+          {feed.length > 0 ? (
+            feed.map((n) => (
+              <article key={n.slug} className={styles.item}>
+                <div className={styles.itemTop}>
+                  <Link className={styles.typeLink} href={href(`/news?type=${encodeURIComponent(n.type)}`)}>
+                    {n.type}
                   </Link>
-                ))}
-              </div>
-            </article>
-          ))}
+                  <span className={styles.dot}>•</span>
+                  <time className={styles.date} dateTime={n.date}>
+                    {formatUA(n.date)}
+                  </time>
+                  {typeof n.minutes === "number" ? (
+                    <>
+                      <span className={styles.dot}>•</span>
+                      <span className={styles.read}>{n.minutes} хв читання</span>
+                    </>
+                  ) : null}
+                </div>
+
+                <Link className={styles.itemTitle} href={href(`/news/${n.slug}`)}>
+                  {n.title}
+                </Link>
+
+                <p className={styles.itemLead}>{n.lead}</p>
+
+                <div className={styles.tags}>
+                  {n.tags.map((tag) => (
+                    <Link
+                      key={tag}
+                      className={styles.tagLink}
+                      href={href(`/news?tag=${encodeURIComponent(tag)}`)}
+                    >
+                      #{tag}
+                    </Link>
+                  ))}
+                </div>
+              </article>
+            ))
+          ) : (
+            <div className={page.muted} style={{ padding: "20px 0" }}>
+              Новин поки що немає. Заходьте пізніше!
+            </div>
+          )}
         </div>
 
         <div className={styles.actions}>

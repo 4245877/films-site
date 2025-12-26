@@ -1,0 +1,43 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: films
+      POSTGRES_USER: films
+      POSTGRES_PASSWORD: films
+    volumes:
+      - pg:/var/lib/postgresql/data
+
+  cms:
+    build: ../../apps/cms
+    env_file:
+      - ../../apps/cms/.env
+    depends_on:
+      - db
+    environment:
+      NODE_ENV: production
+    volumes:
+      - uploads:/srv/app/public/uploads
+
+  web:
+    build: ../../apps/web
+    environment:
+      NODE_ENV: production
+      # Важно: фронт будет ходить на относительный /api через nginx
+      NEXT_PUBLIC_API_BASE: ""
+    depends_on:
+      - cms
+
+  nginx:
+    image: nginx:alpine
+    depends_on:
+      - web
+      - cms
+    ports:
+      - "80:80"
+    volumes:
+      - ../nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+
+volumes:
+  pg:
+  uploads:
