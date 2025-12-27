@@ -1,0 +1,42 @@
+{
+  "kind": "collectionType",
+  "collectionName": "film_types",
+  "info": {
+    "singularName": "film-type",
+    "pluralName": "film-types",
+    "displayName": "film-type"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "titleUk": {
+      "type": "string",
+      "required": true
+    },
+    "titleEn": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "titleUk"
+    },
+    "descriptionUk": {
+      "type": "text"
+    },
+    "descriptionEn": {
+      "type": "text"
+    },
+    "order": {
+      "type": "integer"
+    },
+    "films": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::film.film",
+      "mappedBy": "film_type"
+    }
+  }
+}
