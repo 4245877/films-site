@@ -1,19 +1,13 @@
 export async function apiGet<T>(path: string): Promise<T> {
-  // NEXT_PUBLIC_API_URL должен быть в .env, иначе fallback на localhost
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:1337";
-  const url = `${baseUrl}${path}`;
+  const isServer = typeof window === "undefined";
+  const base = isServer ? (process.env.API_INTERNAL_URL || "http://cms:1337") : "";
 
-  const res = await fetch(url, {
-    cache: "no-store", // для dev-режима (SSR каждый раз)
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  const url = base ? `${base}${path}` : path;
 
+  const res = await fetch(url, { cache: "no-store" });
   if (!res.ok) {
     const text = await res.text().catch(() => "");
     throw new Error(`API Error ${res.status} at ${path}: ${text}`);
   }
-
   return res.json() as Promise<T>;
 }

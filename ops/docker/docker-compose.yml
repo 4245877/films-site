@@ -13,18 +13,17 @@ services:
     working_dir: /srv/app
     env_file:
       - ../../apps/cms/.env
+    environment:
+      NODE_ENV: production
     depends_on:
       - db
     ports:
       - "1337:1337"
-    environment:
-      HOST: 0.0.0.0
-      PORT: 1337
     volumes:
       - ../../apps/cms:/srv/app
       - cms_node_modules:/srv/app/node_modules
       - uploads:/srv/app/public/uploads
-    command: sh -lc "npm install && npm run develop"
+    command: sh -lc "npm install && npm run build && npm run start"
 
   web:
     image: node:20-bullseye

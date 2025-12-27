@@ -2,14 +2,15 @@ import Link from "next/link";
 import { t, isLocale, defaultLocale, type Locale } from "@/lib/i18n";
 import page from "@/styles/Page.module.css";
 import styles from "./NewsIndexPage.module.css";
-// Импортируем созданный хелпер
 import { apiGet } from "@/lib/api";
 
 export const dynamicParams = false;
 
-// Типы для UI (как в твоем дизайне)
+// --- TYPES ---
+
 type NewsType = "анонси" | "релізи" | "трейлери" | "добірки" | "індустрія" | "події" | string;
 
+// Внутренний тип для UI
 type NewsItem = {
   slug: string;
   type: NewsType;
@@ -20,51 +21,32 @@ type NewsItem = {
   minutes?: number;
 };
 
-// Типы ответа API (пример для Strapi v4)
-interface StrapiArticle {
+// Типы ответа от API (Strapi V5)
+interface StrapiArticleV5 {
   id: number;
-  attributes: {
-    slug: string;
-    title: string;
-    lead?: string;     // или description
-    publishedAt: string;
-    content?: string;  // чтобы посчитать время чтения
-    category?: {
-      data: {
-        attributes: {
-          name: string;
-        }
-      } | null;
-    };
-    tags?: {
-      data: Array<{
-        attributes: {
-          name: string;
-        }
-      }>
-    };
-    cover?: {
-      data: any;
-    };
-  };
+  documentId: string;
+  title: string;
+  description?: string;
+  slug: string;
+  publishedAt?: string;
 }
 
 interface ApiResponse {
-  data: StrapiArticle[];
+  data: StrapiArticleV5[];
   meta: any;
 }
+
+// --- HELPERS ---
 
 function formatUA(dateISO: string) {
   if (!dateISO) return "";
   const [y, m, d] = dateISO.split("-").map(Number);
-  // Защита от NaN, если дата пришла битая
   if (!y || !m || !d) return dateISO;
   const dt = new Date(Date.UTC(y, m - 1, d));
   return dt.toLocaleDateString("uk-UA", { year: "numeric", month: "long", day: "numeric" });
 }
 
 // --- MOCK DATA (Fallback) ---
-// Оставляем на случай, если бэкенд пустой, чтобы верстка не "упала"
 const MOCK_ITEMS: NewsItem[] = [
   {
     slug: "weekend-picks-quiet-night",
@@ -101,6 +83,8 @@ const MOCK_ITEMS: NewsItem[] = [
   }
 ];
 
+// --- COMPONENT ---
+
 export default async function NewsPage({
   params
 }: {
@@ -117,33 +101,29 @@ export default async function NewsPage({
 
   try {
     const response = await apiGet<ApiResponse>(
-      "/api/articles?sort=publishedAt:desc&populate=cover,author,category,tags"
+      "/api/articles?sort=publishedAt:desc"
     );
 
-    // 2. Маппинг данных (Backend -> Frontend UI)
-    if (response?.data && response.data.length > 0) {
-      items = response.data.map((item) => {
-        const attr = item.attributes;
-        
-        // Примерный расчет времени чтения (200 слов в минуту)
-        const words = attr.content ? attr.content.split(/\s+/).length : 0;
+    // 2. Маппинг данных (Strapi V5 Flat Response)
+    if (response?.data && Array.isArray(response.data)) {
+      items = response.data.map((a) => {
+        const words = a.description ? a.description.split(/\s+/).length : 0;
         const minutes = words > 0 ? Math.ceil(words / 200) : undefined;
 
         return {
-          slug: attr.slug,
-          // Если категории нет, ставим "новини"
-          type: attr.category?.data?.attributes?.name.toLowerCase() || "новини",
-          title: attr.title,
-          lead: attr.lead || "", // Убедись, что в Strapi есть поле lead или description
-          date: attr.publishedAt ? attr.publishedAt.split("T")[0] : "",
-          tags: attr.tags?.data?.map(t => t.attributes.name) || [],
-          minutes: minutes,
+          slug: a.slug,
+          type: "новини",               // пока фиксировано, позже привяжем category/kind
+          title: a.title,
+          lead: a.description || "",    // поле называется description
+          date: a.publishedAt ? a.publishedAt.split("T")[0] : "",
+          tags: [],                     // пока пустой массив
+          minutes
         };
       });
     }
   } catch (error) {
     console.error("NewsPage API Error:", error);
-    // Игнорируем ошибку, чтобы показать Mock данные (или пустую страницу)
+    // Игнорируем ошибку, сработает fallback на MOCK_ITEMS ниже
   }
 
   // 3. Fallback: Если API вернул пустоту (или лежит), показываем демо-данные
@@ -151,7 +131,7 @@ export default async function NewsPage({
     items = MOCK_ITEMS;
   }
 
-  // Для безопасности, если и API, и моки пусты
+  // Разделение на Featured и Feed
   const featured = items[0];
   const feed = items.slice(1);
 
