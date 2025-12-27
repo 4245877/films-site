@@ -14,16 +14,17 @@ services:
     env_file:
       - ../../apps/cms/.env
     environment:
-      NODE_ENV: production
+      NODE_ENV: development
     depends_on:
       - db
     ports:
       - "1337:1337"
+      - "5173:5173"
     volumes:
       - ../../apps/cms:/srv/app
       - cms_node_modules:/srv/app/node_modules
       - uploads:/srv/app/public/uploads
-    command: sh -lc "npm install && npm run build && npm run start"
+    command: sh -lc "npm install && npm run develop"
 
   web:
     image: node:20-bullseye
@@ -32,6 +33,11 @@ services:
       - cms
     ports:
       - "3000:3000"
+    # --- Добавленная секция ---
+    environment:
+      STRAPI_INTERNAL_URL: http://cms:1337
+      NEXT_PUBLIC_API_URL: http://localhost:8080
+    # --------------------------
     volumes:
       - ../../apps/web:/app
       - web_node_modules:/app/node_modules
