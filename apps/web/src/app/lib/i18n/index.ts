@@ -23,7 +23,6 @@ const uk: Dict = {
   chooseLanguage: "Обери мову",
   goToUkrainian: "Перейти українською",
   goToEnglish: "Go to English",
-  bannersTitle: "Партнери",
   addNews: "Додати новину",
   filter: "Фільтрація",
   from: "Від",

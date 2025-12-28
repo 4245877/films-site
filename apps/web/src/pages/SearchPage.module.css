@@ -1,0 +1,796 @@
+/* ============================================
+   SearchPage.module.css
+   Stable height rows (96px) for virtual list
+   Accessible focus, no layout shifts on hover
+   ============================================ */
+
+/* --------------------------------------------
+   0) Local fallbacks for global design tokens
+   -------------------------------------------- */
+.page {
+  /* colors */
+  --c-text: var(--text, #111827);
+  --c-muted: var(--muted, #6b7280);
+  --c-panel: var(--panel, #ffffff);
+  --c-border: var(--border, rgba(17, 24, 39, 0.12));
+  --c-border-strong: var(--border-strong, rgba(17, 24, 39, 0.28));
+  --c-accent: var(--accent, #c33d2e);
+  --c-accent-2: var(--accent-secondary, #daa520);
+  --c-accent-strong: var(--accent-strong, #8b1c24);
+
+  /* radii / shadows / motion */
+  --r-1: var(--radius-1, 12px);
+  --r-2: var(--radius-2, 16px);
+  --r-3: var(--radius-3, 20px);
+  --sh-2: var(--shadow-2, 0 10px 30px rgba(0, 0, 0, 0.12));
+  --sh-3: var(--shadow-3, 0 14px 40px rgba(0, 0, 0, 0.16));
+  --ease: var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+  --z-sticky: var(--z-sticky, 50);
+
+  min-height: 100vh;
+  padding: clamp(2rem, 5vw, 4rem) clamp(1rem, 3vw, 2rem);
+  max-width: 1400px;
+  margin: 0 auto;
+  animation: pageEntry 0.6s var(--ease);
+  box-sizing: border-box;
+}
+
+.page *,
+.page *::before,
+.page *::after {
+  box-sizing: inherit;
+}
+
+@keyframes pageEntry {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --------------------------------------------
+   1) HERO
+   -------------------------------------------- */
+.hero {
+  text-align: center;
+  margin-bottom: clamp(2.25rem, 5vw, 3.5rem);
+  animation: heroFade 0.7s var(--ease) 0.06s backwards;
+}
+
+@keyframes heroFade {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.h1 {
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  margin: 0 0 0.75rem;
+  background: linear-gradient(135deg, var(--c-text) 0%, var(--c-accent) 55%, var(--c-accent-strong) 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% 200%;
+  animation: gradientShift 6s ease infinite;
+  position: relative;
+}
+
+@keyframes gradientShift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.h1::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -0.5rem;
+  transform: translateX(-50%);
+  width: 88px;
+  height: 4px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--c-accent), var(--c-accent-2));
+  opacity: 0.9;
+  animation: underlinePulse 3s ease-in-out infinite;
+}
+
+@keyframes underlinePulse {
+  0%,
+  100% {
+    width: 88px;
+    opacity: 0.75;
+  }
+  50% {
+    width: 124px;
+    opacity: 1;
+  }
+}
+
+.muted {
+  color: var(--c-muted);
+  font-size: clamp(0.95rem, 2vw, 1.125rem);
+  max-width: 680px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* --------------------------------------------
+   2) MAIN SHELL
+   -------------------------------------------- */
+.shell {
+  background: var(--c-panel);
+  border-radius: var(--r-3);
+  padding: clamp(1.25rem, 3vw, 2.25rem);
+  box-shadow: var(--sh-2);
+  border: 1px solid var(--c-border);
+  position: relative;
+  overflow: hidden;
+  animation: shellEntry 0.65s var(--ease) 0.12s backwards;
+  transition: box-shadow 0.25s var(--ease), transform 0.25s var(--ease);
+}
+
+@keyframes shellEntry {
+  from {
+    opacity: 0;
+    transform: scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.shell::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--c-accent), var(--c-accent-2), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 3s linear infinite;
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@media (hover: hover) {
+  .shell:hover {
+    box-shadow: var(--sh-3);
+    transform: translateY(-2px);
+  }
+}
+
+/* --------------------------------------------
+   3) TOOLBAR
+   -------------------------------------------- */
+.toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1rem, 3vw, 1.5rem);
+  margin-bottom: 1.5rem;
+  animation: toolbarSlide 0.5s var(--ease) 0.18s backwards;
+}
+
+@keyframes toolbarSlide {
+  from {
+    opacity: 0;
+    transform: translateX(-14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* --------------------------------------------
+   4) FIELDS
+   -------------------------------------------- */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.fieldRow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem;
+  align-items: end;
+}
+
+@media (max-width: 767px) {
+  .fieldRow {
+    grid-template-columns: 1fr;
+  }
+}
+
+.label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--c-text);
+  letter-spacing: 0.01em;
+}
+
+.input,
+.select {
+  width: 100%;
+  padding: 0.85rem 1.05rem;
+  font-size: 1rem;
+  line-height: 1.2;
+  color: var(--c-text);
+  background: color-mix(in oklab, var(--c-border) 20%, transparent);
+  border: 1px solid color-mix(in oklab, var(--c-border) 55%, transparent);
+  border-radius: var(--r-1);
+  outline: none;
+  transition: background 0.2s var(--ease), border-color 0.2s var(--ease), box-shadow 0.2s var(--ease),
+    transform 0.2s var(--ease);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.input::placeholder {
+  color: var(--c-muted);
+  opacity: 0.65;
+}
+
+@media (hover: hover) {
+  .input:hover,
+  .select:hover {
+    background: color-mix(in oklab, var(--c-border) 28%, transparent);
+    border-color: color-mix(in oklab, var(--c-accent) 22%, var(--c-border));
+  }
+}
+
+.input:focus,
+.select:focus {
+  background: var(--c-panel);
+  border-color: color-mix(in oklab, var(--c-accent) 70%, var(--c-border));
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--c-accent) 12%, transparent),
+    0 8px 22px color-mix(in oklab, var(--c-accent) 14%, transparent);
+  transform: translateY(-1px);
+}
+
+.input:focus-visible,
+.select:focus-visible {
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--c-accent) 14%, transparent),
+    0 8px 22px color-mix(in oklab, var(--c-accent) 14%, transparent);
+}
+
+.select {
+  cursor: pointer;
+  appearance: none;
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  padding-right: 2.6rem;
+
+  /* arrow (light) */
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23111827' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+@media (prefers-color-scheme: dark) {
+  .select {
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  }
+}
+
+.hint {
+  font-size: 0.8125rem;
+  color: var(--c-muted);
+  opacity: 0.85;
+  line-height: 1.5;
+}
+
+/* --------------------------------------------
+   5) BUTTONS
+   -------------------------------------------- */
+.btn {
+  padding: 0.85rem 1.35rem;
+  font-size: 0.9375rem;
+  font-weight: 650;
+  color: var(--c-panel);
+  background: linear-gradient(135deg, var(--c-accent), var(--c-accent-strong));
+  border: none;
+  border-radius: var(--r-1);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease), filter 0.2s var(--ease);
+  box-shadow: 0 10px 20px color-mix(in oklab, var(--c-accent) 18%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, transparent, rgba(255, 255, 255, 0.22));
+  opacity: 0;
+  transition: opacity 0.25s var(--ease);
+}
+
+@media (hover: hover) {
+  .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 32px color-mix(in oklab, var(--c-accent) 22%, transparent),
+      inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  }
+
+  .btn:hover::before {
+    opacity: 1;
+  }
+}
+
+.btn:active {
+  transform: translateY(0);
+  filter: brightness(0.98);
+}
+
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+  box-shadow: none;
+}
+
+.btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--c-accent) 18%, transparent),
+    0 16px 32px color-mix(in oklab, var(--c-accent) 18%, transparent);
+}
+
+/* --------------------------------------------
+   6) STATS
+   -------------------------------------------- */
+.stats {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.48rem 0.95rem;
+  font-size: 0.875rem;
+  font-weight: 650;
+  color: var(--c-text);
+  background: color-mix(in oklab, var(--c-accent-2) 14%, transparent);
+  border: 1px solid color-mix(in oklab, var(--c-accent-2) 22%, transparent);
+  border-radius: 999px;
+}
+
+/* --------------------------------------------
+   7) VIRTUAL LIST / VIEWPORT
+   -------------------------------------------- */
+.viewport {
+  position: relative;
+  height: 600px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  border-radius: var(--r-2);
+  background: color-mix(in oklab, var(--c-border) 8%, transparent);
+  border: 1px solid var(--c-border);
+  scrollbar-width: thin;
+  scrollbar-color: var(--c-border-strong) transparent;
+}
+
+.viewport:focus-within {
+  border-color: color-mix(in oklab, var(--c-accent) 35%, var(--c-border));
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--c-accent) 10%, transparent);
+}
+
+.viewport::-webkit-scrollbar {
+  width: 10px;
+}
+.viewport::-webkit-scrollbar-track {
+  background: transparent;
+}
+.viewport::-webkit-scrollbar-thumb {
+  background: var(--c-border-strong);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+.viewport::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in oklab, var(--c-accent) 55%, var(--c-border-strong));
+  background-clip: padding-box;
+}
+
+.spacer {
+  position: relative;
+  width: 100%;
+}
+
+.window {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  will-change: transform;
+}
+
+/* --------------------------------------------
+   8) ROW (fixed 96px height)
+   -------------------------------------------- */
+.row {
+  height: 96px; /* IMPORTANT: must match itemHeight in TSX */
+  display: flex;
+  align-items: center;
+  gap: 1.15rem;
+  padding: 0.75rem 1.25rem;
+  border-bottom: 1px solid var(--c-border);
+  color: inherit;
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.2s var(--ease), border-color 0.2s var(--ease), transform 0.2s var(--ease);
+}
+
+.row::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in oklab, var(--c-accent) 7%, transparent),
+    transparent
+  );
+  opacity: 0;
+  transform: translateX(-40%);
+  transition: opacity 0.25s var(--ease), transform 0.35s var(--ease);
+  pointer-events: none;
+}
+
+@media (hover: hover) {
+  .row:hover {
+    background: color-mix(in oklab, var(--c-accent) 4%, transparent);
+    border-color: color-mix(in oklab, var(--c-accent) 16%, var(--c-border));
+    transform: translateX(4px);
+  }
+
+  .row:hover::before {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.row:active {
+  transform: translateX(2px) scale(0.995);
+}
+
+.row:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--c-accent) 14%, transparent);
+  border-radius: 12px;
+}
+
+/* --------------------------------------------
+   9) POSTER (img + placeholder)
+   -------------------------------------------- */
+.poster,
+.posterImg {
+  width: 64px;
+  height: 64px;
+  flex-shrink: 0;
+  border-radius: var(--r-1);
+  overflow: hidden;
+  box-shadow: 0 10px 22px color-mix(in oklab, var(--c-text) 10%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
+}
+
+.poster {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(
+    135deg,
+    hsl(var(--h, 0deg), 70%, 65%),
+    hsl(calc(var(--h, 0deg) + 45deg), 75%, 55%)
+  );
+}
+
+.poster::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.28), transparent 52%, rgba(0, 0, 0, 0.10));
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+.posterText {
+  position: relative;
+  z-index: 1;
+  font-size: 1.2rem;
+  font-weight: 850;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.96);
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.32);
+}
+
+.posterImg {
+  display: block;
+  object-fit: cover;
+  object-position: center;
+  background: color-mix(in oklab, var(--c-border) 18%, transparent);
+}
+
+@media (hover: hover) {
+  .row:hover .poster,
+  .row:hover .posterImg {
+    transform: scale(1.06) rotate(1deg);
+    box-shadow: 0 16px 34px color-mix(in oklab, var(--c-accent) 18%, transparent),
+      0 0 0 3px color-mix(in oklab, var(--c-accent) 14%, transparent);
+  }
+}
+
+/* --------------------------------------------
+   10) ROW TEXT (no wrapping to keep 96px stable)
+   -------------------------------------------- */
+.rowBody {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  overflow: hidden;
+}
+
+.rowTitle {
+  font-size: 1rem;
+  font-weight: 650;
+  color: var(--c-text);
+  letter-spacing: -0.01em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rowSub {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+  flex-wrap: nowrap; /* keep row height stable */
+  font-size: 0.875rem;
+  line-height: 1.2;
+}
+
+@media (hover: hover) {
+  .row:hover .rowTitle {
+    color: var(--c-accent);
+  }
+}
+
+.badgeSoft {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.22rem 0.58rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--c-text);
+  background: color-mix(in oklab, var(--c-accent) 10%, transparent);
+  border: 1px solid color-mix(in oklab, var(--c-accent) 18%, transparent);
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.dot {
+  color: var(--c-border-strong);
+  user-select: none;
+  flex: 0 0 auto;
+}
+
+.mutedInline {
+  color: var(--c-muted);
+  font-size: 0.8125rem;
+  opacity: 0.88;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* --------------------------------------------
+   11) EMPTY / LOADING
+   -------------------------------------------- */
+.empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 380px;
+  padding: 2.75rem 1.5rem;
+  font-size: 1.0625rem;
+  font-weight: 550;
+  color: var(--c-muted);
+  text-align: center;
+  background: color-mix(in oklab, var(--c-border) 6%, transparent);
+  border-radius: var(--r-2);
+  border: 2px dashed var(--c-border);
+  position: relative;
+  overflow: hidden;
+}
+
+.empty::before {
+  content: "🎬";
+  position: absolute;
+  font-size: 7rem;
+  opacity: 0.045;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-14deg);
+  user-select: none;
+  pointer-events: none;
+}
+
+/* --------------------------------------------
+   12) TO TOP
+   -------------------------------------------- */
+.toTop {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  padding: 0.95rem 1.35rem;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--c-panel);
+  background: var(--c-accent);
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  z-index: var(--z-sticky);
+  box-shadow: 0 18px 36px color-mix(in oklab, var(--c-accent) 22%, transparent),
+    0 0 0 1px color-mix(in oklab, var(--c-panel) 10%, transparent) inset;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease), filter 0.2s var(--ease);
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (hover: hover) {
+  .toTop:hover {
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 24px 48px color-mix(in oklab, var(--c-accent) 26%, transparent),
+      0 0 0 2px color-mix(in oklab, var(--c-panel) 15%, transparent) inset;
+  }
+}
+
+.toTop:active {
+  transform: translateY(-1px) scale(1.01);
+  filter: brightness(0.98);
+}
+
+.toTop:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--c-accent) 18%, transparent),
+    0 24px 48px color-mix(in oklab, var(--c-accent) 22%, transparent);
+}
+
+/* --------------------------------------------
+   13) MOBILE
+   -------------------------------------------- */
+@media (max-width: 767px) {
+  .page {
+    padding: 1.5rem 1rem;
+  }
+
+  .shell {
+    padding: 1.15rem;
+    border-radius: var(--r-2);
+  }
+
+  .viewport {
+    height: 500px;
+  }
+
+  .row {
+    padding: 0.75rem 1rem;
+    gap: 1rem;
+  }
+
+  .poster,
+  .posterImg {
+    width: 56px;
+    height: 56px;
+  }
+
+  .rowTitle {
+    font-size: 0.95rem;
+  }
+
+  .toTop {
+    bottom: 1.25rem;
+    right: 1.25rem;
+    padding: 0.85rem 1.2rem;
+    font-size: 0.875rem;
+  }
+}
+
+/* --------------------------------------------
+   14) REDUCED MOTION / HIGH CONTRAST
+   -------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .page *,
+  .page *::before,
+  .page *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .h1 {
+    animation: none !important;
+  }
+  .h1::after {
+    animation: none !important;
+  }
+  .shell::before {
+    animation: none !important;
+  }
+}
+
+@media (prefers-contrast: high) {
+  .shell {
+    border-color: currentColor;
+  }
+  .row {
+    border-bottom-color: currentColor;
+  }
+  .input,
+  .select {
+    border-color: currentColor;
+  }
+  .badgeSoft {
+    border-color: currentColor;
+  }
+}
+
+/* --------------------------------------------
+   15) PRINT
+   -------------------------------------------- */
+@media print {
+  .btn,
+  .toTop,
+  .toolbar {
+    display: none !important;
+  }
+
+  .shell {
+    box-shadow: none;
+    border: 1px solid #000;
+  }
+}

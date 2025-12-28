@@ -196,20 +196,7 @@ const events: EventItem[] = [
   }
 ];
 
-const banners: Banner[] = [
-  {
-    id: "b1",
-    title: { uk: "Партнер 1", en: "Partner 1" },
-    url: "https://example.com",
-    imagePath: "/banners/partner1.svg"
-  },
-  {
-    id: "b2",
-    title: { uk: "Партнер 2", en: "Partner 2" },
-    url: "https://example.org",
-    imagePath: "/banners/partner2.svg"
-  }
-];
+
 
 export function getFilmTypes(): FilmType[] {
   return filmTypes;
@@ -239,6 +226,3 @@ export function getEvents(): EventItem[] {
   return events;
 }
 
-export function getBanners(): Banner[] {
-  return banners;
-}
