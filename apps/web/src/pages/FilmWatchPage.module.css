@@ -12,25 +12,25 @@
   gap: 0.5rem;
   padding: 0.75rem 1.25rem;
   margin-bottom: 2rem;
-  
+
   font-size: 0.9375rem;
   font-weight: 500;
   color: var(--muted);
   text-decoration: none;
-  
+
   background: var(--panel);
   border: 1px solid var(--border);
   border-radius: var(--radius-1);
-  
+
   box-shadow: var(--shadow-1);
-  
+
   transition:
     transform var(--transition-fast),
     background-color var(--transition-base),
     color var(--transition-base),
     border-color var(--transition-base),
     box-shadow var(--transition-base);
-  
+
   will-change: transform;
 }
 
@@ -39,7 +39,7 @@
     color: var(--accent);
     background: color-mix(in oklab, var(--accent) 4%, var(--panel));
     border-color: color-mix(in oklab, var(--accent) 20%, var(--border));
-    box-shadow: 
+    box-shadow:
       var(--shadow-2),
       0 0 0 1px color-mix(in oklab, var(--accent) 12%, transparent);
     transform: translateX(-4px);
@@ -70,16 +70,12 @@
   line-height: 1.1;
   color: var(--text);
   text-wrap: balance;
-  
-  background: linear-gradient(
-    135deg,
-    var(--text) 0%,
-    var(--accent) 100%
-  );
+
+  background: linear-gradient(135deg, var(--text) 0%, var(--accent) 100%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  
+
   transition: opacity var(--transition-base);
 }
 
@@ -110,11 +106,11 @@
   align-items: center;
   padding: 0.5rem 1rem;
   margin-bottom: 2rem;
-  
+
   font-size: 0.875rem;
   font-weight: 600;
   color: var(--accent);
-  
+
   background: linear-gradient(
     135deg,
     color-mix(in oklab, var(--accent) 8%, transparent),
@@ -122,11 +118,11 @@
   );
   border: 1px solid color-mix(in oklab, var(--accent) 18%, transparent);
   border-radius: var(--radius-1);
-  
-  box-shadow: 
+
+  box-shadow:
     0 2px 8px color-mix(in oklab, var(--accent) 8%, transparent),
     inset 0 1px 0 color-mix(in oklab, var(--c-white) 10%, transparent);
-  
+
   transition:
     transform var(--transition-fast),
     box-shadow var(--transition-base),
@@ -142,7 +138,7 @@
 @media (hover: hover) {
   .year:hover {
     transform: translateY(-2px);
-    box-shadow: 
+    box-shadow:
       0 4px 12px color-mix(in oklab, var(--accent) 14%, transparent),
       inset 0 1px 0 color-mix(in oklab, var(--c-white) 15%, transparent);
   }
@@ -164,14 +160,14 @@
   width: 100%;
   max-width: 1120px;
   margin: 0 auto 3rem;
-  
+
   background: var(--panel);
   border: 1px solid var(--border);
   border-radius: var(--radius-3);
-  
+
   overflow: hidden;
   box-shadow: var(--shadow-2);
-  
+
   transition:
     box-shadow var(--transition-slow),
     transform var(--transition-base);
@@ -185,7 +181,7 @@
 
 @media (hover: hover) {
   .videoWrapper:hover {
-    box-shadow: 
+    box-shadow:
       var(--shadow-3),
       0 0 0 1px color-mix(in oklab, var(--accent) 16%, transparent);
   }
@@ -193,7 +189,7 @@
 
 /* Aspect ratio 16:9 для iframe/video */
 .videoWrapper::before {
-  content: '';
+  content: "";
   display: block;
   padding-top: 56.25%; /* 9/16 = 0.5625 */
 }
@@ -214,12 +210,12 @@
   left: 0;
   width: 100%;
   height: 100%;
-  
+
   border: none;
   border-radius: inherit;
-  
+
   background: color-mix(in oklab, var(--text) 4%, var(--panel));
-  
+
   transition: opacity var(--transition-base);
 }
 
@@ -253,40 +249,36 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  
+
   display: inline-flex;
   align-items: center;
   gap: 0.75rem;
   padding: 1.25rem 2rem;
-  
+
   font-size: 1.125rem;
   font-weight: 600;
   color: var(--c-white);
   text-decoration: none;
-  
-  background: linear-gradient(
-    135deg,
-    var(--accent-strong),
-    var(--accent)
-  );
+
+  background: linear-gradient(135deg, var(--accent-strong), var(--accent));
   border-radius: var(--radius-2);
-  
-  box-shadow: 
+
+  box-shadow:
     0 4px 16px color-mix(in oklab, var(--accent) 28%, transparent),
     0 12px 32px color-mix(in oklab, var(--accent-strong) 20%, transparent),
     inset 0 1px 0 color-mix(in oklab, var(--c-white) 16%, transparent);
-  
+
   transition:
     transform var(--transition-base),
     box-shadow var(--transition-base),
     background var(--transition-base);
-  
+
   will-change: transform;
 }
 
 @media (prefers-reduced-motion: no-preference) {
   .externalLink {
-    animation: 
+    animation:
       scaleIn var(--dur-3) var(--ease-spring) 0.4s backwards,
       pulse 2s var(--ease-in-out) infinite 1s;
   }
@@ -295,12 +287,8 @@
 @media (hover: hover) {
   .externalLink:hover {
     transform: translate(-50%, -50%) translateY(-4px) scale(1.05);
-    background: linear-gradient(
-      135deg,
-      var(--accent),
-      var(--accent-secondary)
-    );
-    box-shadow: 
+    background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+    box-shadow:
       0 8px 24px color-mix(in oklab, var(--accent) 36%, transparent),
       0 20px 48px color-mix(in oklab, var(--accent-strong) 28%, transparent),
       inset 0 1px 0 color-mix(in oklab, var(--c-white) 24%, transparent);
@@ -314,7 +302,7 @@
 .externalLink:focus-visible {
   outline: 3px solid var(--c-white);
   outline-offset: 4px;
-  box-shadow: 
+  box-shadow:
     0 8px 24px color-mix(in oklab, var(--accent) 36%, transparent),
     0 0 0 6px color-mix(in oklab, var(--accent) 40%, transparent);
 }
@@ -335,20 +323,20 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  
+
   max-width: 90%;
   padding: 2rem;
-  
+
   font-size: 1rem;
   font-weight: 500;
   color: var(--muted);
   text-align: center;
   line-height: 1.6;
-  
+
   background: color-mix(in oklab, var(--warning) 6%, var(--panel));
   border: 2px dashed var(--border);
   border-radius: var(--radius-2);
-  
+
   transition:
     color var(--transition-base),
     background var(--transition-base),
@@ -383,17 +371,17 @@
   max-width: 800px;
   margin: 0 auto;
   padding: 2rem;
-  
+
   font-size: 1.0625rem;
   line-height: 1.75;
   color: var(--text);
-  
+
   background: var(--panel);
   border: 1px solid var(--border);
   border-radius: var(--radius-2);
-  
+
   box-shadow: var(--shadow-1);
-  
+
   transition:
     box-shadow var(--transition-base),
     background-color var(--transition-base);
@@ -424,7 +412,8 @@
    9. ANIMATIONS (Keyframes)
    ============================================ */
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     transform: translate(-50%, -50%) scale(1);
   }
   50% {
@@ -467,14 +456,22 @@
    10. ACCESSIBILITY & PRINT
    ============================================ */
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  /* ВИПРАВЛЕНО: замінено селектор "*" на список конкретних класів,
+     щоб уникнути помилки "Selector is not pure".
+  */
+  .backLink,
+  .title,
+  .year,
+  .videoWrapper,
+  .mediaFrame,
+  .externalLink,
+  .noVideo,
+  .description {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-  
+
   .externalLink {
     animation: none !important;
   }
@@ -486,7 +483,7 @@
   .externalLink {
     display: none !important;
   }
-  
+
   .title,
   .year,
   .description {
@@ -503,22 +500,22 @@
 @media (prefers-color-scheme: dark) {
   .videoWrapper {
     background: color-mix(in oklab, var(--panel) 95%, var(--accent));
-    box-shadow: 
+    box-shadow:
       var(--shadow-2),
       inset 0 0 0 1px color-mix(in oklab, var(--c-white) 4%, transparent);
   }
-  
+
   .externalLink {
-    box-shadow: 
+    box-shadow:
       0 4px 16px color-mix(in oklab, var(--accent) 38%, transparent),
       0 12px 32px color-mix(in oklab, var(--accent-strong) 28%, transparent),
       inset 0 1px 0 color-mix(in oklab, var(--c-white) 12%, transparent),
       inset 0 -1px 0 color-mix(in oklab, var(--c-ink-900) 20%, transparent);
   }
-  
+
   @media (hover: hover) {
     .externalLink:hover {
-      box-shadow: 
+      box-shadow:
         0 8px 24px color-mix(in oklab, var(--accent) 48%, transparent),
         0 20px 48px color-mix(in oklab, var(--accent-strong) 36%, transparent),
         inset 0 1px 0 color-mix(in oklab, var(--c-white) 18%, transparent);
