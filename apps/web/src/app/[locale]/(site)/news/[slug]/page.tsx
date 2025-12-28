@@ -1,6 +1,12 @@
-import type { Locale } from "@/lib/i18n";
+// apps/web/src/app/[locale]/(site)/news/[slug]/page.tsx
 
-// если у тебя уже есть export const dynamicParams = false; — не дублируй
+import type { Locale } from "@/lib/i18n";
+import NewsSlugPage from "@/pages/NewsIndexPage"; // если вдруг логика там
+
+
+export default NewsSlugPage;
+
+// Для output: "export" параметры должны быть только из generateStaticParams
 export const dynamicParams = false;
 
 function readListEnv(name: string): string[] {
@@ -13,8 +19,7 @@ function readListEnv(name: string): string[] {
 }
 
 export function generateStaticParams(): Array<{ locale: Locale; slug: string }> {
-  // Для статического экспорта перечисли slug'и новостей явно:
-  // NEWS_SLUGS="slug-1,slug-2,slug-3"
+  // Задай в Actions: NEWS_SLUGS="slug-1,slug-2,slug-3"
   const slugs = readListEnv("NEWS_SLUGS");
 
   const locales: Locale[] = ["uk", "en"];
