@@ -25,6 +25,14 @@ jobs:
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
+      # 1. Сначала ставим pnpm
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.15.0
+          run_install: false
+
+      # 2. Потом настраиваем Node.js и кеширование
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -32,9 +40,7 @@ jobs:
           cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
 
-      - name: Enable Corepack (pnpm)
-        run: corepack enable
-
+      # 3. Устанавливаем зависимости (Corepack больше не нужен)
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
