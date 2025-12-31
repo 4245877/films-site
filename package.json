@@ -1,4 +1,4 @@
-﻿{
+{
   "name": "films-site",
   "private": true,
   "workspaces": ["apps/*"],
