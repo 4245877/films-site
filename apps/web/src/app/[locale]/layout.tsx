@@ -1,26 +1,29 @@
-import { locales, isLocale, defaultLocale } from "@/lib/i18n";
+// apps/web/src/app/[locale]/layout.tsx
 
-// Отключаем генерацию страниц для локалей, которых нет в списке ниже (вернет 404)
+import type { ReactNode } from "react";
+import { locales, isLocale, defaultLocale, type Locale } from "@/lib/i18n";
+
 export const dynamicParams = false;
 
-// Генерируем статические пути для сборки (обязательно для output: "export")
-export function generateStaticParams() {
-  return [{ locale: "uk" }, { locale: "en" }];
+// Обязательно для output: "export"
+export function generateStaticParams(): Array<{ locale: Locale }> {
+  // ВАЖНО: используем тот же список, что и isLocale()
+  return locales.map((locale) => ({ locale }));
 }
 
 export default async function LocaleLayout({
   children,
   params
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  
-  // Валидация не строго обязательна при dynamicParams = false, 
-  // но полезна для внутренней логики если понадобится
+
+  // Не роняем весь сайт в 404 из-за рассинхрона.
+  // dynamicParams=false и generateStaticParams всё равно не дадут “лишние” локали в экспорт.
   const safeLocale = isLocale(locale) ? locale : defaultLocale;
-  void safeLocale; // заглушка для линтера, так как переменная пока не используется
+  void safeLocale;
 
   return <>{children}</>;
 }
