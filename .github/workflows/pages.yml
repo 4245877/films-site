@@ -25,27 +25,17 @@ jobs:
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.15.0
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
-
-      - name: Enable pnpm via Corepack
-        run: |
-          corepack enable
-          corepack prepare pnpm@10.15.0 --activate
-          pnpm --version
-
-      - name: Get pnpm store path
-        run: echo "PNPM_STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
-
-      - name: Cache pnpm store
-        uses: actions/cache@v4
-        with:
-          path: ${{ env.PNPM_STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -53,6 +43,9 @@ jobs:
       - name: Build web (static export)
         env:
           NEXT_PUBLIC_BASE_PATH: /${{ github.event.repository.name }}
+          # если вдруг где-то остались запросы к http://cms:1337 — можно принудительно отключить на CI
+          NEXT_PUBLIC_API_URL: ""
+          STRAPI_INTERNAL_URL: ""
         run: pnpm -C apps/web build
 
       - name: Disable Jekyll
