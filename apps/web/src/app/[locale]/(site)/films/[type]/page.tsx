@@ -1,6 +1,6 @@
 // apps/web/src/app/[locale]/(site)/films/[type]/page.tsx
 
-import FilmTypePage from "@/pages/FilmTypePage";
+import FilmTypePage from "@/screens/FilmTypePage";
 import type { Locale } from "@/lib/i18n";
 
 // Для output: "export" нельзя dynamicParams: true

@@ -1,1 +1,1 @@
-export { default } from "@/pages/ContactsPage";
+export { default } from "@/screens/ContactsPage";

@@ -1,3 +1,4 @@
+// apps/web/src/screens/FilmTypePage.tsx
 import Link from "next/link";
 import { apiGet } from "@/lib/api";
 import { t, isLocale, defaultLocale, type Locale } from "@/lib/i18n";
@@ -9,7 +10,7 @@ type Props = {
   params: Promise<{ locale: string; type: string }>;
 };
 
-type ApiResp<T> = { data: T[]; meta: any };
+type ApiResp<T> = { data?: T[]; meta?: any };
 
 // Обновили функцию, чтобы искать поле 'cover' согласно схеме
 function getCoverUrl(f: any): string | undefined {
@@ -28,23 +29,43 @@ export default async function FilmTypePage({ params }: Props) {
 
   const href = (p: string) => `/${safeLocale}${p}`;
 
-  // Заголовок типа
-  const typeResp = await apiGet<ApiResp<any>>(
-    `/api/film-types?filters[slug][$eq]=${encodeURIComponent(type)}`
-  );
-  const ft = typeResp.data?.[0];
-  const typeTitle =
-    (safeLocale === "uk" ? ft?.titleUk : ft?.titleEn) || ft?.titleUk || type;
+  let films: any[] = [];
+  let typeTitle = "";
 
-  // Список фильмов по типу
-  // Обновленный запрос: используем populate=* для получения всех вложенных полей
-  const filmsResp = await apiGet<ApiResp<any>>(
-    `/api/films?filters[film_type][slug][$eq]=${encodeURIComponent(
-      type
-    )}&sort=year:desc&populate=*`
-  );
+  // Заголовок типа (фолбэк, не падаем при пустых данных/ошибке)
+  try {
+    const typeResp = await apiGet<ApiResp<any>>(
+      `/api/film-types?filters[slug][$eq]=${encodeURIComponent(type)}`
+    );
 
-  const films = filmsResp.data || [];
+    if (Array.isArray(typeResp?.data) && typeResp.data.length > 0) {
+      const ft = typeResp.data[0];
+      typeTitle =
+        (safeLocale === "uk" ? ft?.titleUk : ft?.titleEn) ||
+        ft?.titleUk ||
+        ft?.title ||
+        "";
+    }
+  } catch {
+    // ничего — важно не ронять build
+  }
+
+  if (!typeTitle) typeTitle = t(safeLocale, "films") || "Фільми";
+
+  // Список фильмов по типу (тоже безопасно)
+  try {
+    const filmsResp = await apiGet<ApiResp<any>>(
+      `/api/films?filters[film_type][slug][$eq]=${encodeURIComponent(
+        type
+      )}&sort=year:desc&populate=*`
+    );
+
+    if (Array.isArray(filmsResp?.data)) {
+      films = filmsResp.data;
+    }
+  } catch {
+    // ничего
+  }
 
   return (
     <>
@@ -67,7 +88,7 @@ export default async function FilmTypePage({ params }: Props) {
             const coverUrl = getCoverUrl(f);
             return (
               <article
-                key={f.documentId ?? f.id}
+                key={f.documentId ?? f.id ?? f.slug}
                 className="card"
                 style={{ padding: 14 }}
               >
@@ -75,7 +96,7 @@ export default async function FilmTypePage({ params }: Props) {
                   {coverUrl ? (
                     <img
                       src={coverUrl}
-                      alt={f.title}
+                      alt={f.title ?? ""}
                       style={{
                         width: 90,
                         height: 130,

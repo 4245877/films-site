@@ -326,7 +326,7 @@ function SearchClient({ locale }: { locale: Locale }) {
         const res = await fetch(url, {
           signal: controller.signal,
           headers: { "Content-Type": "application/json" },
-          cache: "no-store"
+          cache: "force-cache"
         });
 
         if (!res.ok) {
