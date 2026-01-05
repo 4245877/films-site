@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vanilla JS demo — Films</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <main class="wrap">
+    <h1>Додати новину (vanilla JS демо)</h1>
+
+    <form id="newsForm" novalidate>
+      <label class="field">
+        <span>Заголовок *</span>
+        <input id="title" name="title" minlength="3" maxlength="80" required />
+        <small class="err" id="errTitle"></small>
+      </label>
+
+      <label class="field">
+        <span>Опис (до 80 символів)</span>
+        <textarea id="description" name="description" maxlength="80"></textarea>
+        <div class="hint"><span id="count">0</span>/80</div>
+      </label>
+
+      <label class="field">
+        <span>Обкладинка (jpg/png, до 2MB)</span>
+        <input id="cover" type="file" accept=".jpg,.jpeg,.png" />
+        <small class="err" id="errCover"></small>
+      </label>
+
+      <button type="submit">Зберегти чернетку</button>
+      <p id="msg" class="msg" role="status" aria-live="polite"></p>
+    </form>
+
+    <section class="list">
+      <h2>Збережені чернетки</h2>
+      <ul id="drafts"></ul>
+    </section>
+  </main>
+
+  <script src="./app.js"></script>
+</body>
+</html>
